@@ -49,11 +49,13 @@ md.use(function mdItCodeBlock(md, name, options) {
       }) + '\n';
     } else if (lang.indexOf('parameter-list') === 0) {
       return renderParams({md, str, lang}) + '\n';
-    } else {
+    } else if (lang) {
       let highlighted = getCodeMirrorHTML(str,
         mdToCm[lang] || (console.error(`FIXME: load CodeMirror ${lang} mode`), lang)
       );
       return `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;
+    } else {
+      return `<pre><code>${md.utils.escapeHtml(str)}</code></pre>\n`;
     }
   };
 });
