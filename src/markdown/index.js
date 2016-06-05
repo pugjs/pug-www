@@ -1,19 +1,33 @@
 import {html as beautifyHTML} from 'js-beautify';
 import MarkdownIt from 'markdown-it';
-import {render as pugRender} from 'pug';
-
 import mdItAnchor from 'markdown-it-anchor';
 import mdItContainer from 'markdown-it-container';
+import {render as pugRender} from 'pug';
 
 import PugPreview from '../components/PugPreviewServer.js';
+import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 import renderComponent from '../utils/render-component.js';
-
 import renderParams from './parameter-list.js';
+
+import 'codemirror/mode/htmlmixed/htmlmixed';
+import 'codemirror/mode/jade/jade';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/shell/shell';
 
 const md = MarkdownIt({
   html: true,
   typographer: true
 });
+
+const mdToCm = {
+  html: 'htmlmixed',
+  jade: 'jade',
+  javascript: 'javascript',
+  js: 'javascript',
+  pug: 'jade',
+  sh: 'shell',
+  shell: 'shell'
+};
 
 md.use(mdItAnchor);
 
@@ -36,7 +50,10 @@ md.use(function mdItCodeBlock(md, name, options) {
     } else if (lang.indexOf('parameter-list') === 0) {
       return renderParams({md, str, lang}) + '\n';
     } else {
-      return `<pre><code${slf.renderAttrs(token)}>${md.utils.escapeHtml(str)}</code></pre>\n`;
+      let highlighted = getCodeMirrorHTML(str,
+        mdToCm[lang] || (console.error(`FIXME: load CodeMirror ${lang} mode`), lang)
+      );
+      return `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;
     }
   };
 });
