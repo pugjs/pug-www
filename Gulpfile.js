@@ -1,55 +1,42 @@
+const browserify = require('browserify');
 const gulp = require('gulp');
 const babel = require('gulp-babel');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
-const util = require('gulp-util');
-const through = require('through2');
+const source = require('vinyl-source-stream');
 
-gulp.task('default', ['js', 'html']);
+gulp.task('default', ['babel', 'html', 'pug.js', 'pug.min.js']);
 
-gulp.task('js', function () {
+gulp.task('babel', function () {
   return gulp.src('src/**/*.js')
     .pipe(babel())
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('js-watch', function () {
-  return gulp.src('src/**/*.js')
-    .pipe(watch('src/**/*.js'))
-    .pipe(babel())
-    .pipe(gulp.dest('lib'));
-});
-
-gulp.task('html', ['js'], function () {
+gulp.task('html', ['babel'], function () {
   return gulp.src('../pug-en/src/**/*.md')
-    .pipe(renderMd())
+    .pipe(require('./lib/markdown').default('en'))
+    .pipe(gulp.dest('out/en'));
+});
+
+gulp.task('ext', ['babel'], function () {
+  return gulp.src('../pug-en/src/reference/extends.md')
+    .pipe(require('./lib/markdown').default('en'))
+    .pipe(gulp.dest('out/en'));
+});
+
+gulp.task('pug.js', function () {
+  return browserify('../pug/lib/index.js', {
+    standalone: 'pug'
+  }).bundle()
+    .pipe(source('pug.js'))
     .pipe(gulp.dest('out'));
 });
 
-function renderMd() {
-  const md = require('./lib/markdown').default;
-
-  return through.obj(function (file, encoding, callback) {
-    if (file.isNull() || file.content === null) {
-      return callback(null, file);
-    }
-
-    if (file.isStream()) {
-      return callback(new util.PluginError('md', 'Streams not supported!'));
-    }
-
-    try {
-      let rendered = md.render(file.contents.toString());
-      file.contents = Buffer.from ? Buffer.from(rendered) : new Buffer(rendered);
-      file.path = util.replaceExtension(file.path, '.html');
-
-      this.push(file);
-    } catch (err) {
-      return callback(new util.PluginError('md', err, {
-        fileName: file.path,
-        showStack: true
-      }));
-    }
-
-    callback();
-  });
-}
+gulp.task('pug.min.js', ['pug.js'], function () {
+  return gulp.src('out/pug.js')
+    .pipe(uglify())
+    .pipe(rename('pug.min.js'))
+    .pipe(gulp.dest('out'));
+});

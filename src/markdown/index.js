@@ -1,86 +1,54 @@
-import {html as beautifyHTML} from 'js-beautify';
-import MarkdownIt from 'markdown-it';
-import mdItAnchor from 'markdown-it-anchor';
-import mdItContainer from 'markdown-it-container';
-import {render as pugRender} from 'pug';
+import {resolve} from 'path';
+import {load as cheerioLoad} from 'cheerio';
+import {PluginError, replaceExtension} from 'gulp-util';
+import {compileFile} from '../../../pug';
+import through from 'through2';
 
-import PugPreview from '../components/PugPreviewServer.js';
-import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
-import renderComponent from '../utils/render-component.js';
-import renderParams from './parameter-list.js';
+import md from './markdown-it.js';
 
-import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/jade/jade';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/shell/shell';
+const tmpl = p => resolve(__dirname, '..', '..', 'templates', p);
 
-const md = MarkdownIt({
-  html: true,
-  typographer: true
-});
-
-const mdToCm = {
-  html: 'htmlmixed',
-  jade: 'jade',
-  javascript: 'javascript',
-  js: 'javascript',
-  pug: 'jade',
-  sh: 'shell',
-  shell: 'shell'
+const compiledTemplates = {
+  api: compileFile(tmpl('api.pug')),
+  reference: compileFile(tmpl('reference.pug'))
 };
 
-md.use(mdItAnchor);
-
-md.use(function mdItCodeBlock(md, name, options) {
-  md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
-    let token = tokens[idx];
-    let info = token.info ? md.utils.unescapeAll(token.info).trim() : '';
-    let lang = '';
-    let str = token.content;
-
-    if (info) {
-      lang = info.split(/\s+/g)[0];
-      token.attrJoin('class', options.langPrefix + lang);
+export default function renderMd(lang) {
+  return through.obj(function (file, encoding, callback) {
+    if (file.isNull() || file.content === null) {
+      return callback(null, file);
     }
 
-    if (lang.indexOf('pug-demo') === 0) {
-      return renderComponent(PugPreview, {
-        initialCode: str
-      }) + '\n';
-    } else if (lang.indexOf('parameter-list') === 0) {
-      return renderParams({md, str, lang}) + '\n';
-    } else if (lang) {
-      let highlighted = getCodeMirrorHTML(str,
-        mdToCm[lang] || (console.error(`FIXME: load CodeMirror ${lang} mode`), lang)
-      );
-      return `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;
-    } else {
-      return `<pre><code>${md.utils.escapeHtml(str)}</code></pre>\n`;
+    if (file.isStream()) {
+      return callback(new PluginError('md', 'Streams not supported!'));
     }
-  };
-});
 
-md.use(mdItContainer, 'panel', {
-  validate(params) {
-    return /^panel\s+([^\s]*)\s+(.*)$/.test(params.trim());
-  },
-  render(tokens, idx) {
-    let tok = tokens[idx];
-    let m = tok.info.trim().match(/^panel\s+([^\s]*)\s+(.*)$/);
+    try {
+      let isReference = ~file.path.indexOf('reference');
+      let rendered = md.render(file.contents.toString(), {
+        filename: file.path,
+        lang
+      });
 
-    if (tok.nesting === 1) {
-      let className = md.utils.escapeHtml(m[1]);
-      let title = md.utils.escapeHtml(m[2]);
+      const $ = cheerioLoad(rendered);
+      let title = $('h1').first().text().trim();
+      if (!title) {
+        throw new Error(`h1 missing in ${file.path}`)
+      }
 
-      return (
-`<div class="panel panel-${className}">
-<div class="panel-heading">${title}</div>
-<div class="panel-body">
-`);
-    } else {
-      return '  </div>\n</div>\n';
+      rendered = compiledTemplates[isReference ? 'reference' : 'api']({title, rawHtml: rendered});
+
+      file.contents = Buffer.from ? Buffer.from(rendered) : new Buffer(rendered);
+      file.path = replaceExtension(file.path, '.html');
+
+      this.push(file);
+    } catch (err) {
+      return callback(new PluginError('md', err, {
+        fileName: file.path,
+        showStack: true
+      }));
     }
-  },
-});
 
-export default md;
+    callback();
+  });
+};
