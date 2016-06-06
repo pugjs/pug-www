@@ -29,7 +29,7 @@ export default (props) => {
             {col.map(file => (
               <pre className={`preview-${file.mode} cm-s-default`}>
                 <code dangerouslySetInnerHTML={{
-                  __html: getCodeMirrorHTML(file.contents, file.mode)
+                  __html: getCodeMirrorHTML(file.contents, file.mode).trim()
                 }}></code>
               </pre>
             ))}

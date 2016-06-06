@@ -40,7 +40,7 @@ export function renderMd(lang) {
 
       rendered = compiledTemplates[isReference ? 'reference' : 'api']({title, rawHtml: rendered});
 
-      file.contents = Buffer.from ? Buffer.from(rendered) : new Buffer(rendered);
+      file.contents = strToBuffer(rendered);
       file.path = replaceExtension(file.path, '.html');
 
       this.push(file);

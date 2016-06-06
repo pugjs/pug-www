@@ -5,8 +5,9 @@ import mdItContainer from 'markdown-it-container';
 import {render as pugRender} from 'pug';
 
 import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
-import renderPreview from './preview.js';
+import renderDoctypes from './doctypes.js';
 import renderParams from './parameter-list.js';
+import renderPreview from './preview.js';
 
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
@@ -18,7 +19,11 @@ const md = MarkdownIt({
   typographer: true
 });
 
-md.use(mdItAnchor);
+md.use(mdItAnchor, {
+  level: 2,
+  permalink: true,
+  permalinkClass: 'small'
+});
 
 md.use(function mdItCodeBlock(md, name, options) {
   md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
@@ -39,6 +44,8 @@ md.use(function mdItCodeBlock(md, name, options) {
       return renderPreview({str, lang, config, env}) + '\n';
     } else if (lang.indexOf('parameter-list') === 0) {
       return renderParams({md, str, lang}) + '\n';
+    } else if (lang === 'doctypes') {
+      return renderDoctypes() + '\n';
     } else if (lang) {
       let highlighted = getCodeMirrorHTML(str, lang);
       return `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;

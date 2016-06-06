@@ -8,10 +8,10 @@ import 'codemirror/mode/jade/jade';
 export default (props) => {
   let compiled = pug.render(props.initialCode, {pretty: true});
   const input = {
-    __html: getCodeMirrorHTML(props.initialCode, 'jade')
+    __html: getCodeMirrorHTML(props.initialCode, 'jade').trim()
   };
   const output = {
-    __html: getCodeMirrorHTML(compiled, 'htmlmixed')
+    __html: getCodeMirrorHTML(compiled, 'htmlmixed').trim()
   };
 
   return (
