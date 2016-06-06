@@ -50,23 +50,25 @@ md.use(function mdItCodeBlock(md, name, options) {
 
 md.use(mdItContainer, 'card', {
   validate(params) {
-    return /^card\s+([^\s]*)\s+(.*)$/.test(params.trim());
+    return /^float\s+(.*)$/.test(params.trim());
   },
   render(tokens, idx) {
     let tok = tokens[idx];
-    let m = tok.info.trim().match(/^card\s+([^\s]*)\s+(.*)$/);
+    let m = tok.info.trim().match(/^float\s+(.*)$/);
 
     if (tok.nesting === 1) {
-      let className = md.utils.escapeHtml(m[1]);
-      let title = md.utils.escapeHtml(m[2]);
+      let className = {
+        danger: 'danger',
+        note: 'info'
+      }[m[1].trim()];
+      let title = {
+        danger: 'Danger',
+        note: 'Note'
+      }[m[1].trim()];
 
-      return (
-`<div class="card card-${className}">
-<div class="card-header">${title}</div>
-<div class="card-block">
-`);
+      return `<div class="alert alert-${className}"><p><strong>${title}</strong></p>`;
     } else {
-      return '  </div>\n</div>\n';
+      return '</div>\n';
     }
   },
 });

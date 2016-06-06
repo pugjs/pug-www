@@ -1,10 +1,12 @@
-import {resolve} from 'path';
+import {join, resolve} from 'path';
 import {load as cheerioLoad} from 'cheerio';
 import {PluginError, replaceExtension} from 'gulp-util';
 import {compileFile} from '../../../pug';
 import through from 'through2';
+import File from 'vinyl';
 
 import md from './markdown-it.js';
+import {demos} from './preview.js';
 
 const tmpl = p => resolve(__dirname, '..', '..', 'templates', p);
 
@@ -13,7 +15,7 @@ const compiledTemplates = {
   reference: compileFile(tmpl('reference.pug'))
 };
 
-export default function renderMd(lang) {
+export function renderMd(lang) {
   return through.obj(function (file, encoding, callback) {
     if (file.isNull() || file.content === null) {
       return callback(null, file);
@@ -52,3 +54,37 @@ export default function renderMd(lang) {
     callback();
   });
 };
+
+export function getDemoFiles() {
+  const stream = through.obj();
+
+  setImmediate(() => {
+    let manifest = {};
+
+    demos.forEach(demo => {
+      const inputs = demo.files.filter(f => f.input);
+
+      inputs.forEach(file => {
+        stream.write(new File({
+          path: resolve('demos', demo.demo, file.name),
+          contents: strToBuffer(file.contents)
+        }));
+      });
+
+      manifest[demo.demo] = {
+        files: inputs.map(file => file.name)
+      };
+    });
+
+    stream.write(new File({
+      path: resolve('demos', 'manifest.json'),
+      contents: strToBuffer(JSON.stringify(manifest))
+    }));
+
+    stream.end();
+  });
+
+  return stream;
+};
+
+const strToBuffer = str => Buffer.from ? Buffer.from(str) : new Buffer(str);

@@ -22,8 +22,8 @@ export default (props) => {
   }, []);
 
   return (
-    <div className="preview" data-control={props.readonly && 'interactive'}>
-      <div className="row">
+    <div>
+      <div className="row" data-control={props.readonly && 'interactive'}>
         {columns.map(col => (
           <div className={innerClass}>
             {col.map(file => (
@@ -37,9 +37,9 @@ export default (props) => {
         ))}
       </div>
       {
-        props.slug ? <div className="row">
+        props.demo ? <div className="row">
           <div className="col-lg-12">
-            Edit and render this sample live on <a href={`../demo.html#demo=${props.slug}`}>demo</a>.
+            Edit and render this sample live on <a href={`../demo.html#demo=${props.demo}`}>demo</a>.
           </div>
         </div> : null
       }

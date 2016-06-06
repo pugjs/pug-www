@@ -6,7 +6,11 @@ const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
 const source = require('vinyl-source-stream');
 
-gulp.task('default', ['babel', 'html', 'pug.js', 'pug.min.js']);
+gulp.task('default', ['website', 'standalone']);
+
+gulp.task('website', ['html', 'demo']);
+
+gulp.task('standalone', ['browserify', 'uglify']);
 
 gulp.task('babel', function () {
   return gulp.src('src/**/*.js')
@@ -16,17 +20,16 @@ gulp.task('babel', function () {
 
 gulp.task('html', ['babel'], function () {
   return gulp.src('../pug-en/src/**/*.md')
-    .pipe(require('./lib/markdown').default('en'))
+    .pipe(require('./lib/markdown').renderMd('en'))
     .pipe(gulp.dest('out/en'));
 });
 
-gulp.task('ext', ['babel'], function () {
-  return gulp.src('../pug-en/src/reference/extends.md')
-    .pipe(require('./lib/markdown').default('en'))
+gulp.task('demo', ['html'], function () {
+  return require('./lib/markdown').getDemoFiles()
     .pipe(gulp.dest('out/en'));
 });
 
-gulp.task('pug.js', function () {
+gulp.task('browserify', function () {
   return browserify('../pug/lib/index.js', {
     standalone: 'pug'
   }).bundle()
@@ -34,7 +37,7 @@ gulp.task('pug.js', function () {
     .pipe(gulp.dest('out'));
 });
 
-gulp.task('pug.min.js', ['pug.js'], function () {
+gulp.task('uglify', ['browserify'], function () {
   return gulp.src('out/pug.js')
     .pipe(uglify())
     .pipe(rename('pug.min.js'))
