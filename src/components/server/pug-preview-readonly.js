@@ -1,9 +1,8 @@
-import React from 'react';
-import getCodeMirrorHTML from '../../utils/get-codemirror-html.js'
+import getCodeMirrorHTML from '../../utils/get-codemirror-html.js';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
 
-export default (props) => {
+export default props => {
   const positions = props.files.reduce((prev, {position}) => (prev.add(position), prev), new Set());
   const innerClass = ['col-lg-6', 'col-lg-4'][positions.size - 2];
   const index = {
@@ -45,4 +44,4 @@ export default (props) => {
       }
     </div>
   );
-}
+};

@@ -1,14 +1,16 @@
-import {join, resolve} from 'path';
+import {resolve} from 'path';
 import {load as cheerioLoad} from 'cheerio';
 import {PluginError, replaceExtension} from 'gulp-util';
-import {compileFile} from '../../../pug';
 import through from 'through2';
 import File from 'vinyl';
 
+import {compileFile} from '../../../pug';
 import md from './markdown-it.js';
 import {demos} from './preview.js';
 
 const tmpl = p => resolve(__dirname, '..', '..', 'templates', p);
+
+const strToBuffer = str => Buffer.from ? Buffer.from(str) : new Buffer(str);
 
 const compiledTemplates = {
   api: compileFile(tmpl('api.pug')),
@@ -26,16 +28,16 @@ export function renderMd(lang) {
     }
 
     try {
-      let isReference = ~file.path.indexOf('reference');
+      const isReference = file.path.indexOf('reference') !== -1;
       let rendered = md.render(file.contents.toString(), {
         filename: file.path,
         lang
       });
 
       const $ = cheerioLoad(rendered);
-      let title = $('h1').first().text().trim();
+      const title = $('h1').first().text().trim();
       if (!title) {
-        throw new Error(`h1 missing in ${file.path}`)
+        throw new Error(`h1 missing in ${file.path}`);
       }
 
       rendered = compiledTemplates[isReference ? 'reference' : 'api']({title, rawHtml: rendered});
@@ -53,13 +55,13 @@ export function renderMd(lang) {
 
     callback();
   });
-};
+}
 
 export function getDemoFiles() {
   const stream = through.obj();
 
   setImmediate(() => {
-    let manifest = {};
+    const manifest = {};
 
     demos.forEach(demo => {
       const inputs = demo.files.filter(f => f.input);
@@ -85,6 +87,4 @@ export function getDemoFiles() {
   });
 
   return stream;
-};
-
-const strToBuffer = str => Buffer.from ? Buffer.from(str) : new Buffer(str);
+}

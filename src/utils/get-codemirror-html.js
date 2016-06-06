@@ -1,5 +1,10 @@
-import {runtime} from '../../../pug';
 import {runMode} from 'codemirror/addon/runmode/runmode.node';
+import 'codemirror/mode/htmlmixed/htmlmixed';
+import 'codemirror/mode/jade/jade';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/shell/shell';
+
+import {runtime} from '../../../pug';
 
 export const normalizeMode = {
   html: 'htmlmixed',

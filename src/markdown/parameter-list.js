@@ -5,20 +5,22 @@ const getTypeClass = str => {
     boolean: 'boolean',
     class: 'function',
     options: 'object',
-    string: 'string',
+    string: 'string'
   };
 
   if (str.indexOf('|') !== -1) {
     return '';
-  } else {
-    if (typeToClass[str]) {
-      return typeToClass[str];
-    } else if (str.toLowerCase().indexOf('array') === 0) {
-      return 'array';
-    } else {
-      return '';
-    }
   }
+
+  if (typeToClass[str]) {
+    return typeToClass[str];
+  }
+
+  if (str.toLowerCase().indexOf('array') === 0) {
+    return 'array';
+  }
+
+  return '';
 };
 
 const getParams = (md, str) =>
@@ -28,7 +30,7 @@ const getParams = (md, str) =>
     if (i % 3 === 0) {
       params.push({name: curLine});
     } else {
-      let param = params[params.length - 1];
+      const param = params[params.length - 1];
       curLine = curLine.substr(1).trim();
 
       if (i % 3 === 1) {

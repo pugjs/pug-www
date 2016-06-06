@@ -1,12 +1,9 @@
-// import pug from '../external/pug';
-import pug from '../../../../pug';
-import React from 'react';
-import getCodeMirrorHTML from '../../utils/get-codemirror-html.js'
-import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/jade/jade';
+import getCodeMirrorHTML from '../../utils/get-codemirror-html.js';
 
-export default (props) => {
-  let compiled = pug.render(props.initialCode, {pretty: true});
+import pug from '../../../../pug';
+
+export default props => {
+  const compiled = pug.render(props.initialCode, {pretty: true});
   const input = {
     __html: getCodeMirrorHTML(props.initialCode, 'jade').trim()
   };
