@@ -31,7 +31,7 @@ export default class PugPreview extends React.Component {
       const rendered = pug.render(this.state.code, Object.assign({}, this.state.locals));
       output = beautifyHtml(rendered);
     } catch (err) {
-      output = err.stack;
+      output = err.message;
     }
 
     const options = {

@@ -7,3 +7,10 @@ $headings-font-family: Arvo, sans-serif;
 $headings-font-weight: 700;
 
 @import "~bootstrap/scss/bootstrap.scss";
+
+pre {
+  border: 2px solid black;
+  padding: 6px;
+  margin-left: -8px;
+  margin-right: -8px;
+}

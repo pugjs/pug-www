@@ -23,8 +23,7 @@
     "codemirror": "^5.15.2",
     "js-beautify": "^1.6.2",
     "react": "^15.1.0",
-    "react-code-mirror": "^3.0.6",
-    "react-codemirror": "^0.2.6"
+    "react-code-mirror": "^3.0.6"
   },
   "devDependencies": {
     "babel": "^6.5.2",

@@ -2,6 +2,18 @@
 
 .CodeMirror {
   height: auto;
+  border: 2px solid black;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.CodeMirror pre {
+  font-size: 90%;
+  padding: 0 6px;
+}
+
+.CodeMirror-lines {
+  padding: 6px 0;
 }
 
 .preview-wrapper {
