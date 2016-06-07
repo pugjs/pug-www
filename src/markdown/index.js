@@ -4,7 +4,7 @@ import {PluginError, replaceExtension} from 'gulp-util';
 import through from 'through2';
 import File from 'vinyl';
 
-import {compileFile} from '../../../pug';
+import {compileFile} from '../../external/pug';
 import md from './markdown-it.js';
 import {demos} from './preview.js';
 

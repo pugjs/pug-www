@@ -1,6 +1,6 @@
+import React from 'react';
+
 import getCodeMirrorHTML from '../../utils/get-codemirror-html.js';
-import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/jade/jade';
 
 export default props => {
   const positions = props.files.reduce((prev, {position}) => (prev.add(position), prev), new Set());

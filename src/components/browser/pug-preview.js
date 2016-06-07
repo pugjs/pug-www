@@ -4,7 +4,7 @@ import ReactCodeMirror from 'react-codemirror';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
 
-import pug from '../../../pug';
+import pug from '../../../external/pug';
 
 export default class PugPreview extends React.Component {
   constructor(props) {
@@ -15,6 +15,8 @@ export default class PugPreview extends React.Component {
         pageTitle: 'Pug'
       }
     };
+
+    this.updateCode = this.updateCode.bind(this);
   }
 
   updateCode(newCode) {
@@ -27,14 +29,18 @@ export default class PugPreview extends React.Component {
     const compiled = pug.render(this.state.code, Object.assign({}, this.state.locals, {pretty: true}));
 
     return (
-      <div class="preview">
-        <ReactCodeMirror class="preview-pug" value={this.state.code} onChange={this.updateCode} options={{
-          mode: 'jade'
-        }} />
-        <ReactCodeMirror class="preview-html" value={compiled} options={{
-          mode: 'htmlmixed',
-          readOnly: true
-        }} />
+      <div className="row">
+        <div className="col-lg-6">
+          <ReactCodeMirror data-control="input-pug" value={this.state.code} onChange={this.updateCode} options={{
+        mode: 'jade'
+          }} />
+        </div>
+        <div className="col-lg-6">
+          <ReactCodeMirror data-control="output-html" value={compiled} options={{
+            mode: 'htmlmixed',
+            readOnly: true
+          }} />
+        </div>
       </div>
     );
   }

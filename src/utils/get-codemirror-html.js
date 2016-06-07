@@ -4,7 +4,7 @@ import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/shell/shell';
 
-import {runtime} from '../../../pug';
+import {runtime} from '../../external/pug';
 
 export const normalizeMode = {
   html: 'htmlmixed',
