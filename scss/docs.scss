@@ -1,0 +1,21 @@
+@import "base.scss";
+
+.CodeMirror {
+  height: auto;
+}
+
+.preview-wrapper {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.header-anchor {
+  // font-size: $small-font-size;
+  font-size: 80%;
+  opacity: 0;
+  transition: opacity .5s ease-out;
+}
+
+:hover > .header-anchor {
+  opacity: 1;
+}

@@ -22,7 +22,7 @@ export default props => {
 
   return (
     <div>
-      <div className="row" data-control={props.readonly && 'interactive'}>
+      <div className="row">
         {columns.map(col => (
           <div className={innerClass}>
             {col.map(file => (

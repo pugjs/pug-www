@@ -1,6 +1,6 @@
 import {basename, extname} from 'path';
 
-import PugPreview from '../components/server/pug-preview.js';
+import PugPreview from '../components/pug-preview.js';
 import PugPreviewReadonly from '../components/server/pug-preview-readonly.js';
 import renderComponent from '../utils/render-component.js';
 
@@ -8,10 +8,12 @@ export const demos = [];
 
 export default function renderPreview({str, lang, config}) {
   if (lang === 'pug-preview') {
-    return renderComponent(PugPreview, {
-      initialCode: str,
-      config
-    });
+    return `<div class="preview-wrapper" data-control="interactive">${
+      renderComponent(PugPreview, {
+        initialCode: str,
+        config
+      })
+    }</div>`;
   } else if (lang === 'pug-preview-readonly') {
     const files = str.split(/\\{10}/).slice(1).reduce((prev, cur) => {
       const lines = cur.split('\n');

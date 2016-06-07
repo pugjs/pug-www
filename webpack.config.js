@@ -25,6 +25,10 @@ module.exports = {
           presets: ['es2015', 'react'],
           plugins: ['transform-runtime']
         }
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
       }
     ],
   },

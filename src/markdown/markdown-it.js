@@ -11,8 +11,7 @@ const md = new MarkdownIt({
 
 md.use(mdItAnchor, {
   level: 2,
-  permalink: true,
-  permalinkClass: 'small'
+  permalink: true
 });
 
 md.use(mdItCodeBlock);
