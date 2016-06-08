@@ -3,7 +3,7 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 
 import PugPreview from '../components/pug-preview.js';
-import PugPreviewReadonly from '../components/server/pug-preview-readonly.js';
+import PugPreviewReadonly from '../components/pug-preview-readonly.js';
 import {getMode} from '../utils/get-codemirror-html.js';
 
 export const demos = [];

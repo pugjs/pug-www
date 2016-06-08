@@ -1,6 +1,6 @@
 import React from 'react';
 
-import getCodeMirrorHTML from '../../utils/get-codemirror-html.js';
+import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 
 export default ({config: {files, demo}, env: {filename}}) => {
   const positions = files.reduce((prev, {position}) => (prev.add(position), prev), new Set());

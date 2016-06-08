@@ -47,7 +47,7 @@ export default class PugPreview extends React.Component {
             const prop = relative(process.cwd(), resolved).replace(/\\/g, '/');
 
             if (!this.findFile(prop)) {
-              throw Object.assign(new Error('ENOENT: no such file or directory, open ' + prop), {
+              throw Object.assign(new Error(`ENOENT: no such file or directory, open ${resolved}`), {
                 errno: -4058,
                 code: 'ENOENT',
                 syscall: 'open',

@@ -49,7 +49,7 @@ export default function renderMd(lang) {
 
       if (isReference) {
         this.push(new File({
-          path: join('demos', basename(file.path, '.md') + '.json'),
+          path: join('demos', `${basename(file.path, '.md')}.json`),
           contents: strToBuffer(JSON.stringify(demos))
         }));
       }
