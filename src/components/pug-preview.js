@@ -1,4 +1,4 @@
-import {resolve, dirname, relative} from 'path';
+import * as path from 'path';
 import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html.js';
 import React from 'react';
 import CodeMirror from 'react-code-mirror';
@@ -9,6 +9,8 @@ import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
 
 import pug from '../../external/pug';
+
+const {resolve, dirname, relative} = path.posix || path;
 
 export default class PugPreview extends React.Component {
   constructor(props) {
@@ -44,7 +46,7 @@ export default class PugPreview extends React.Component {
           },
           read: filename => {
             const resolved = resolve(filename);
-            const prop = relative(process.cwd(), resolved).replace(/\\/g, '/');
+            const prop = relative(process.cwd(), resolved);
 
             if (!this.findFile(prop)) {
               throw Object.assign(new Error(`ENOENT: no such file or directory, open ${resolved}`), {
