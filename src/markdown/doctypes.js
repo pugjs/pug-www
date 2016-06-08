@@ -13,7 +13,7 @@ dl
         code!= getCodeMirrorHTML(doctypes[doctype], 'htmlmixed')`);
 
 export default () => {
-  const path = resolve('doctypes', {basedir: pathResolve(__dirname, '..', '..', 'external', 'pug')});
+  const path = resolve('doctypes', {basedir: pathResolve(__dirname, '../../external/pug')});
   const doctypes = require(path);
 
   return template({doctypes, getCodeMirrorHTML});

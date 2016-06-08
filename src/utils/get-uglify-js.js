@@ -4,7 +4,7 @@ import {resolve as pathResolve} from 'path';
 import {sync as resolve} from 'resolve';
 
 export default () => {
-  const path = resolve('uglify-js', {basedir: pathResolve(__dirname, '..', '..', 'external', 'pug')});
+  const path = resolve('uglify-js', {basedir: pathResolve(__dirname, '../../external/pug')});
   const uglify = require(path);
 
   let src =

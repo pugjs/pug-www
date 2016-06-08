@@ -5,4 +5,6 @@ block head
 
 block content
   != rawHtml
+  script.
+    var demos=!{JSON.stringify(demos || [])};
   script(src='../../docs.bundle.js')

@@ -2,8 +2,8 @@
 
 @import "~bootstrap/scss/_variables.scss";
 
-$font-family-base: PT Sans, $font-family-serif;
-$headings-font-family: Arvo, sans-serif;
+$font-family-base: PT Sans, $font-family-sans-serif;
+$headings-font-family: Arvo, $font-family-serif;
 $headings-font-weight: 700;
 
 @import "~bootstrap/scss/bootstrap.scss";

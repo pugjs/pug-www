@@ -2,18 +2,28 @@ import React from 'react';
 
 import getCodeMirrorHTML from '../../utils/get-codemirror-html.js';
 
-export default props => {
-  const positions = props.files.reduce((prev, {position}) => (prev.add(position), prev), new Set());
+export default ({config: {files, demo}, env: {filename}}) => {
+  const positions = files.reduce((prev, {position}) => (prev.add(position), prev), new Set());
   const innerClass = ['col-lg-6', 'col-lg-4'][positions.size - 2];
+
+  if (!innerClass) {
+    throw new Error(`Too many positions of pug-preview-readonly ${positions.size} in ${filename}`);
+  }
+
   const index = {
     '<': 0,
     '>': positions.size === 2 ? 1 : 2,
     '|': 1
   };
-  const columns = props.files.reduce((prev, cur) => {
-    let col = prev[index[cur.position]];
+  const columns = files.reduce((prev, cur) => {
+    const i = index[cur.position];
+    if (i === undefined) {
+      throw new Error(`Unknown position "${cur.position}" in ${filename}`);
+    }
+
+    let col = prev[i];
     if (!col) {
-      col = prev[index[cur.position]] = [];
+      col = prev[i] = [];
     }
     col.push(cur);
 
@@ -36,9 +46,9 @@ export default props => {
         ))}
       </div>
       {
-        props.demo ? <div className="row">
+        demo ? <div className="row">
           <div className="col-lg-12">
-            Edit and render this sample live on <a href={`../demo.html#demo=${props.demo}`}>demo</a>.
+            Edit and render this sample live on <a href={`../demo.html#demo=${demo}`}>demo</a>.
           </div>
         </div> : null
       }

@@ -9,9 +9,9 @@ const webpack = require('webpack-stream');
 
 gulp.task('default', ['website', 'standalone']);
 
-gulp.task('website', ['html', 'webpack']);
+gulp.task('website', ['html', 'webpack', 'webpack-uglify']);
 
-gulp.task('standalone', ['browserify', 'uglify']);
+gulp.task('standalone', ['browserify', 'browserify-uglify']);
 
 gulp.task('babel', () => {
   return gulp.src('src/**/*.js')
@@ -21,12 +21,7 @@ gulp.task('babel', () => {
 
 gulp.task('html', ['babel'], () => {
   return gulp.src('../pug-en/src/**/*.md')
-    .pipe(require('./lib/markdown').renderMd('en'))
-    .pipe(gulp.dest('out/en'));
-});
-
-gulp.task('demo', ['html'], () => {
-  return require('./lib/markdown').getDemoFiles()
+    .pipe(require('./lib/markdown').default('en'))
     .pipe(gulp.dest('out/en'));
 });
 
@@ -44,15 +39,22 @@ gulp.task('browserify', () => {
     .pipe(gulp.dest('out'));
 });
 
-gulp.task('uglify', ['browserify'], () => {
+gulp.task('browserify-uglify', ['browserify'], () => {
   return gulp.src('out/pug.js')
     .pipe(uglify())
-    .pipe(rename('pug.min.js'))
+    .pipe(rename(p => p.basename += '.min'))
     .pipe(gulp.dest('out'));
 });
 
 gulp.task('webpack', ['uglify-js'], () => {
   return gulp.src('src/entry/docs.js')
     .pipe(webpack(require('./webpack.config.js')))
+    .pipe(gulp.dest('out'));
+});
+
+gulp.task('webpack-uglify', ['webpack'], () => {
+  return gulp.src('out/*.bundle.js')
+    .pipe(uglify())
+    .pipe(rename(p => p.basename += '.min'))
     .pipe(gulp.dest('out'));
 });

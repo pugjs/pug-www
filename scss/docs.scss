@@ -1,10 +1,10 @@
+@import "~codemirror/lib/codemirror.css";
 @import "base.scss";
 
 .CodeMirror {
   height: auto;
   border: 2px solid black;
-  margin-left: -8px;
-  margin-right: -8px;
+  margin: 0 -8px 1rem -8px;
 }
 
 .CodeMirror pre {

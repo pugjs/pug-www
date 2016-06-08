@@ -20,20 +20,22 @@ md.use(mdItContainer, 'card', {
   validate(params) {
     return /^float\s+(.*)$/.test(params.trim());
   },
-  render(tokens, idx) {
+  render(tokens, idx, options, env) {
     const tok = tokens[idx];
     const m = tok.info.trim().match(/^float\s+(.*)$/);
 
     if (tok.nesting === 1) {
-      const className = {
-        danger: 'danger',
-        note: 'info'
-      }[m[1].trim()];
-      const title = {
-        danger: 'Danger',
-        note: 'Note'
+      const info = {
+        danger: {className: 'danger', title: 'Danger'},
+        warning: {className: 'warning', title: 'Warning'},
+        note: {className: 'info', title: 'Note'}
       }[m[1].trim()];
 
+      if (!info) {
+        throw new Error(`Float level "${m[1].trim()}" not defined. Used in ${env.filename}.`);
+      }
+
+      const {className, title} = info;
       return `<div class="alert alert-${className}"><p><strong>${title}</strong></p>`;
     }
 
