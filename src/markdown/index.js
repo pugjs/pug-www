@@ -1,8 +1,5 @@
 import {basename, join, resolve} from 'path';
 import {load as cheerioLoad} from 'cheerio';
-import {PluginError, replaceExtension} from 'gulp-util';
-import through from 'through2';
-import File from 'vinyl';
 
 import {compileFile} from 'pug';
 import md from './markdown-it.js';

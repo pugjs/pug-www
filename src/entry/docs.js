@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 import PugPreview from '../components/pug-preview.js';
 
-import '../../scss/docs.scss';
-
 window.ReactDOM = ReactDOM;
 window.React = React;
 window.PugPreview = PugPreview;
