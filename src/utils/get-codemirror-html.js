@@ -5,7 +5,7 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/shell/shell';
 
-import {runtime} from '../../external/pug';
+import {runtime} from 'pug';
 
 const normalizeMode = {
   css: 'css',

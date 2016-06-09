@@ -1,4 +1,4 @@
-import {compile as pugCompile} from '../../external/pug';
+import {compile as pugCompile} from 'pug';
 
 const getTypeClass = str => {
   const typeToClass = {

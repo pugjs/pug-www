@@ -8,7 +8,7 @@ import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
 
-import pug from '../../external/pug';
+import pug from 'pug';
 
 const {resolve, dirname, relative} = path.posix || path;
 

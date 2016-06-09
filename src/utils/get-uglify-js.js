@@ -1,10 +1,10 @@
 // Based on uglify-to-browserify
 import {readFileSync as read} from 'fs';
-import {resolve as pathResolve} from 'path';
+import {dirname} from 'path';
 import {sync as resolve} from 'resolve';
 
 export default () => {
-  const path = resolve('uglify-js', {basedir: pathResolve(__dirname, '../../external/pug')});
+  const path = resolve('uglify-js', {basedir: dirname(require.resolve('pug'))});
   const uglify = require(path);
 
   let src =

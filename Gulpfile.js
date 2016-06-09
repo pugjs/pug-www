@@ -9,7 +9,7 @@ const webpack = require('webpack-stream');
 
 gulp.task('default', ['website', 'standalone']);
 
-gulp.task('website', ['html', 'webpack', 'webpack-uglify']);
+gulp.task('website', ['webpack', 'webpack-uglify']);
 
 gulp.task('standalone', ['browserify', 'browserify-uglify']);
 
@@ -17,12 +17,6 @@ gulp.task('babel', () => {
   return gulp.src('src/**/*.js')
     .pipe(babel())
     .pipe(gulp.dest('lib'));
-});
-
-gulp.task('html', ['babel'], () => {
-  return gulp.src('../pug-en/src/**/*.md')
-    .pipe(require('./lib/markdown').default('en'))
-    .pipe(gulp.dest('out/en'));
 });
 
 gulp.task('uglify-js', ['babel'], () => {
