@@ -17,6 +17,7 @@ app.get('/docs.bundle.js', browserify(__dirname + '/entry/docs.js', {
     babelify
   ]
 }));
+const styleCache = {};
 app.get('/style.css', (req, res, next) => {
   const src = scss.renderFile(__dirname + '/../scss/docs.scss', {
     importer: [
@@ -34,14 +35,21 @@ app.get('/style.css', (req, res, next) => {
   src.replace(/\@import url\(([^\)]+)\)/g, (_, path) => paths.push(path));
   Promise.all(paths.map(p => {
     if (/^https?\:\/\//.test(p)) {
-      return request('GET', p).getBody('utf8').then(body => contents[p] = body);
+      if (styleCache[p]) {
+        contents[p] = styleCache[p];
+      } else {
+        return request('GET', p).getBody('utf8').then(body => {
+          styleCache[p] = body;
+          contents[p] = body
+        });
+      }
     } else {
       contents[p] = readFileSync(p, 'utf8');
     }
   })).done(() => {
     res.type('css');
     res.send(src.replace(/\@import url\(([^\)]+)\)/g, (_, path) => contents[path]));
-  });
+  }, next);
 });
 
 app.use((req, res, next) => {
