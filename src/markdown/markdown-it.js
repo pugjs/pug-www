@@ -32,7 +32,7 @@ md.use(mdItContainer, 'card', {
       }[m[1].trim()];
 
       if (!info) {
-        throw new Error(`Float level "${m[1].trim()}" not defined. Used in ${env.filename}.`);
+        throw new Error(`Float level "${m[1].trim()}" not defined. Used in ${env.id}.`);
       }
 
       const {className, title} = info;

@@ -6,10 +6,9 @@ import PugPreview from '../components/pug-preview.js';
 import PugPreviewReadonly from '../components/pug-preview-readonly.js';
 import {getMode} from '../utils/get-codemirror-html.js';
 
-export const demos = [];
 export const previews = {};
 
-export default function renderPreview({str, lang, config, env}) {
+export default function renderPreview({str, lang, config = {}, env}) {
   if (lang === 'pug-preview') {
     const splitted = str.split(/\\{10}/);
     const files = [];
@@ -33,13 +32,14 @@ export default function renderPreview({str, lang, config, env}) {
       });
     }
 
-    if (!previews[basename(env.filename, '.md')]) {
-      previews[basename(env.filename, '.md')] = [];
+    config.files = files;
+    if (!previews[env.id]) {
+      previews[env.id] = [];
     }
-    const i = previews[basename(env.filename, '.md')].push(files) - 1;
+    const i = previews[env.id].push(config) - 1;
 
     return `<div class="preview-wrapper" data-control="interactive" data-index=${i}>${
-      renderToString(<PugPreview {...{files}} />)
+      renderToString(<PugPreview {...config} />)
     }</div>`;
   } else if (lang === 'pug-preview-readonly') {
     const files = str.split(/\\{10}/).slice(1).reduce((prev, cur) => {
@@ -56,12 +56,7 @@ export default function renderPreview({str, lang, config, env}) {
       return prev;
     }, []);
 
-    config = config.reduce((prev, cur) => (prev[cur.split('=')[0]] = cur.substr(cur.indexOf('=') + 1), prev), {});
     config.files = files;
-
-    if (config.demo) {
-      demos.push(config);
-    }
 
     return renderToString(<PugPreviewReadonly {...{config, env}} />);
   }

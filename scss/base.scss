@@ -5,6 +5,7 @@
 $font-family-base: PT Sans, $font-family-sans-serif;
 $headings-font-family: Arvo, $font-family-serif;
 $headings-font-weight: 700;
+$headings-margin-bottom: $spacer;
 
 @import "~bootstrap/scss/bootstrap.scss";
 
@@ -13,4 +14,14 @@ pre {
   padding: 6px;
   margin-left: -8px;
   margin-right: -8px;
+}
+
+.nav-pills.nav-stacked {
+  .nav-pills.nav-stacked {
+    padding-left: 1rem;
+  }
+}
+
+code {
+  white-space: pre-wrap;
 }

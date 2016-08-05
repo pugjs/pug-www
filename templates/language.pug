@@ -4,7 +4,12 @@ block head
   title #{title} Documentation &ndash; Pug
 
 block content
-  != rawHtml
+  .col-lg-9
+    != rawHtml
+  .col-lg-3
+    +nav
+
+block after
   script.
     var demos=!{JSON.stringify(demos || [])};
-  script(src='../../docs.bundle.js')
+  script(src=`../../${template}.bundle.js`)

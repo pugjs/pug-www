@@ -1,0 +1,11 @@
+extends main.pug
+
+block head
+  link(rel='stylesheet' href='/docs.css')
+  title #{title} &ndash; Pug
+
+block content
+  .col-lg-9
+    != rawHtml
+  .col-lg-3
+    +nav

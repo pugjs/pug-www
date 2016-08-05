@@ -1,4 +1,4 @@
-import {compile as pugCompile} from 'pug';
+import {compile} from 'pug';
 
 const getTypeClass = str => {
   const typeToClass = {
@@ -24,7 +24,7 @@ const getTypeClass = str => {
 };
 
 const getParams = (md, str) =>
-  str.split('\n').reduce((params, curLine, i) => {
+  str.trim().split('\n').reduce((params, curLine, i) => {
     curLine = curLine.trim();
 
     if (i % 3 === 0) {
@@ -34,7 +34,7 @@ const getParams = (md, str) =>
       curLine = curLine.substr(1).trim();
 
       if (i % 3 === 1) {
-        param.class = getTypeClass(curLine);
+        // param.class = getTypeClass(curLine);
         param.type = curLine;
       } else {
         param.description = md.renderInline(curLine);
@@ -44,11 +44,10 @@ const getParams = (md, str) =>
     return params;
   }, []);
 
-const template = pugCompile(`
+const template = compile(`
 dl(class=lang)
   each param in params
-    dt= param.name
-    dd.type(class=param.class)= param.type
+    dt #{param.name}#[span.type : #{param.type}]
     dd.description!= param.description
 `);
 

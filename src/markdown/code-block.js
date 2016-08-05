@@ -1,3 +1,4 @@
+import {Lexer} from 'pug-lexer';
 import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 import renderDoctypes from './doctypes.js';
 import renderParams from './parameter-list.js';
@@ -8,14 +9,27 @@ export default function mdItCodeBlock(md) {
     const token = tokens[idx];
     const info = token.info ? md.utils.unescapeAll(token.info).trim() : '';
     let lang = '';
-    let config = [];
+    const config = {};
     const str = token.content;
 
     if (info) {
       const splitted = info.split(/\s+/g);
       lang = splitted[0];
-      config = splitted.slice(1);
-      token.attrJoin('class', options.langPrefix + lang);
+      const lexer = new Lexer(splitted.slice(1).join(' '), {});
+      let res;
+      try {
+        res = lexer.attrs();
+      } catch (err) {
+        err.message += `\nIn ${env.id}`;
+        throw err;
+      }
+
+      if (res) {
+        const attrs = lexer.tokens.slice(1, -1);
+        attrs.forEach(({name, val}) => {
+          config[name] = eval(val)
+        });
+      }
     }
 
     if (lang.indexOf('pug-preview') === 0) {

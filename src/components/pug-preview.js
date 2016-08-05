@@ -1,5 +1,6 @@
-import * as path from 'path';
+import {resolve, dirname, relative} from 'path';
 import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html.js';
+import pug from 'pug';
 import React from 'react';
 import CodeMirror from 'react-code-mirror';
 
@@ -7,10 +8,6 @@ import 'codemirror/mode/css/css';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
-
-import pug from 'pug';
-
-const {resolve, dirname, relative} = path.posix || path;
 
 export default class PugPreview extends React.Component {
   constructor(props) {
@@ -40,10 +37,7 @@ export default class PugPreview extends React.Component {
       plugins: [
         {
           name: 'pug-www',
-          resolve: (filename, options) => {
-            const source = options.filename.trim();
-            return resolve(dirname(source), filename.trim());
-          },
+          resolve: (filename, source) => resolve(dirname(source.trim()), filename.trim()),
           read: filename => {
             const resolved = resolve(filename);
             const prop = relative(process.cwd(), resolved);
@@ -70,7 +64,7 @@ export default class PugPreview extends React.Component {
     try {
       output = pug.render(this.findFile(this.state.main).contents, Object.assign({
         filename: this.state.main
-      }, this.options));
+      }, this.options)).trim();
       output = beautifyHtml(output);
     } catch (err) {
       output = err.message;

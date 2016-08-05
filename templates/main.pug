@@ -1,5 +1,33 @@
 extends layout.pug
 
+mixin nav(prefix)
+  mixin navItem(path)
+    a.nav-link(
+      href=relative(dirname(id), path)
+      class={active: path === id}
+    )= _.nav[path]
+
+  // nav placeholder
+  nav.nav.nav-pills.nav-stacked
+    +navItem('api')
+    +navItem('language')
+    ul.nav.nav-pills.nav-stacked
+      +navItem('language/case')
+      +navItem('language/code')
+      +navItem('language/comments')
+      +navItem('language/conditionals')
+      +navItem('language/doctype')
+      +navItem('language/extends')
+      +navItem('language/filters')
+      +navItem('language/includes')
+      +navItem('language/inheritance')
+      +navItem('language/interpolation')
+      +navItem('language/iteration')
+      +navItem('language/mixins')
+      +navItem('language/plain-text')
+      +navItem('language/tags')
+
 block body
   .container
     block content
+  block after
