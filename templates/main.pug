@@ -37,6 +37,18 @@ block head
   title #{title} &ndash; Pug
 
 block body
+  //- nav.navbar.navbar-light.bg-faded
+  nav.navbar.navbar-full.navbar-dark.bg-primary
+    .container
+      a.navbar-brand(href='/') pug
+      ul.nav.navbar-nav.pull-xs-right
+        li.nav-item.active
+          a.nav-link(href='/') Documentation
+        li.nav-item
+          a.nav-link(href='/') Demo
+        li.nav-item
+          a.nav-link(href='https://github.com/pugjs/pug') GitHub
+
   .container
     block content
   block after

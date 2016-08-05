@@ -14,6 +14,8 @@ const scss = jst(jstScss);
 
 const app = express();
 
+app.get('/logo.svg', express.static(join(__dirname, '..')));
+
 // TODO: envify
 app.get('/pug.bundle.js', browserify(['pug'], {
   ignore: ['http', 'https']
