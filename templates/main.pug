@@ -1,16 +1,22 @@
 extends layout.pug
 
 mixin nav(prefix)
-  mixin navItem(path)
+  mixin navItem(path, noLink)
     a.nav-link(
-      href=relative(dirname(id), path)
-      class={active: path === id}
+      href=noLink ? false : relative(dirname(id), path + '.html')
+      class={
+        active: !noLink && path === id
+      }
     )= _.nav[path]
 
   // nav placeholder
   nav.nav.nav-pills.nav-stacked
-    +navItem('api')
-    +navItem('language')
+    +navItem('api', true)
+    ul.nav.nav-pills.nav-stacked
+      +navItem('api/getting-started')
+      +navItem('api/express')
+      +navItem('api/reference')
+    +navItem('language', true)
     ul.nav.nav-pills.nav-stacked
       +navItem('language/case')
       +navItem('language/code')
@@ -26,6 +32,9 @@ mixin nav(prefix)
       +navItem('language/mixins')
       +navItem('language/plain-text')
       +navItem('language/tags')
+
+block head
+  title #{title} &ndash; Pug
 
 block body
   .container

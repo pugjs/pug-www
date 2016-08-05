@@ -1,11 +1,11 @@
 extends main.pug
 
-block head
-  link(rel='stylesheet' href='/docs.css')
-  title #{title} &ndash; Pug
-
 block content
+  .col-lg-3.pull-lg-right
+    +nav
   .col-lg-9
     != rawHtml
-  .col-lg-3
-    +nav
+
+block after
+  script(src='/pug.bundle.js')
+  script(src=`/generic.bundle.js`)

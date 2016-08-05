@@ -15,11 +15,24 @@ const scss = jst(jstScss);
 const app = express();
 
 // TODO: envify
+app.get('/pug.bundle.js', browserify(['pug'], {
+  ignore: ['http', 'https']
+}));
+app.get('/generic.bundle.js', browserify(join(__dirname, 'entry', 'generic.js'), {
+  transform: [
+    babelify
+  ],
+  external: ['pug'],
+  ignore: ['http', 'https']
+}));
 app.get('/language.bundle.js', browserify(join(__dirname, 'entry', 'language.js'), {
   transform: [
     babelify
-  ]
+  ],
+  external: ['pug'],
+  ignore: ['http', 'https']
 }));
+
 const styleCache = {};
 app.get('/style.css', (req, res, next) => {
   const src = scss.renderFile(join(__dirname, '..', 'scss', 'docs.scss'), {
@@ -56,19 +69,17 @@ app.get('/style.css', (req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  const [, lang, ...rest] = req.path.split('/');
+  rest.push((rest.pop() || 'index').replace(/\.html$/, ''));
+
   let src;
   try {
-    src = readFileSync('../pug-en/src/' + req.path + '.md', 'utf8');
+    src = readFileSync(`../pug-${lang}/src/${rest.join('/')}.md`, 'utf8');
   } catch (ex) {
     if (ex.code !== 'ENOENT') throw ex;
-    try {
-      src = readFileSync('../pug-en/src/' + req.path + '/index.md', 'utf8');
-    } catch (ex) {
-      if (ex.code !== 'ENOENT') throw ex;
-      return next();
-    }
+    return next();
   }
-  let html = renderMd('en', src);
+  let html = renderMd(lang, src);
   res.send(html);
 });
 

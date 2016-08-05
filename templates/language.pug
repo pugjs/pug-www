@@ -1,15 +1,13 @@
 extends main.pug
 
-block head
-  title #{title} Documentation &ndash; Pug
-
 block content
+  .col-lg-3.pull-lg-right
+    +nav
   .col-lg-9
     != rawHtml
-  .col-lg-3
-    +nav
 
 block after
   script.
     var demos=!{JSON.stringify(demos || [])};
-  script(src=`../../${template}.bundle.js`)
+  script(src='/pug.bundle.js')
+  script(src='/language.bundle.js')

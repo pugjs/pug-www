@@ -22,21 +22,10 @@ md.use(mdItContainer, 'card', {
   },
   render(tokens, idx, options, env) {
     const tok = tokens[idx];
-    const m = tok.info.trim().match(/^float\s+(.*)$/);
+    const m = tok.info.trim().match(/^float\s+([^ ]*)(.*)$/);
 
     if (tok.nesting === 1) {
-      const info = {
-        danger: {className: 'danger', title: 'Danger'},
-        warning: {className: 'warning', title: 'Warning'},
-        note: {className: 'info', title: 'Note'}
-      }[m[1].trim()];
-
-      if (!info) {
-        throw new Error(`Float level "${m[1].trim()}" not defined. Used in ${env.id}.`);
-      }
-
-      const {className, title} = info;
-      return `<div class="alert alert-${className}"><p><strong>${title}</strong></p>`;
+      return `<div class="alert alert-${m[1]}"><h6>${m[2]}</h6>`;
     }
 
     return '</div>\n';
