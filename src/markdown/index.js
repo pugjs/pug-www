@@ -1,16 +1,11 @@
 import {dirname, relative, resolve} from 'path';
 import fm from 'front-matter';
-import {compileFile} from 'pug';
+import {renderFile} from 'pug';
 
 import md from './markdown-it.js';
 import {previews} from './preview.js';
 
-const tmpl = p => resolve(__dirname, '..', '..', 'templates', p);
-
-const compiledTemplates = {
-  generic: compileFile(tmpl('generic.pug')),
-  language: compileFile(tmpl('language.pug'))
-};
+const tmpl = p => resolve(__dirname, '..', '..', 'templates', `${p}.pug`);
 
 export default function renderMd(lang, src) {
   const {attributes, body} = fm(src);
@@ -23,7 +18,7 @@ export default function renderMd(lang, src) {
 
   const demos = previews[id] || [];
 
-  rendered = compiledTemplates[template](Object.assign({
+  rendered = renderFile(tmpl(template), Object.assign({
     lang,
     rawHtml: rendered,
     demos,

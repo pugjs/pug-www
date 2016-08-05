@@ -1,12 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic|PT+Sans:400,400italic,700,700italic);
 
-@import "~bootstrap/scss/_variables.scss";
-
-$font-family-base: PT Sans, $font-family-sans-serif;
-$headings-font-family: Arvo, $font-family-serif;
-$headings-font-weight: 700;
-$headings-margin-bottom: $spacer;
-
+@import "_variables.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 
 pre {
