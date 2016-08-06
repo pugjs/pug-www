@@ -1,20 +1,20 @@
 import {readFileSync} from 'fs';
 import {dirname, join, resolve} from 'path';
-import Promise from 'promise';
-import nodeResolve from 'resolve';
+
+import acceptLanguage from 'accept-language';
 import babelify from 'babelify';
 import browserify from 'browserify-middleware';
 import express from 'express';
 import jst from 'jstransformer';
 import jstScss from 'jstransformer-scss';
+import nodeResolve from 'resolve';
+import Promise from 'promise';
 import request from 'then-request';
 import renderMd from './markdown';
 
 const scss = jst(jstScss);
 
 const app = express();
-
-app.get('/logo.svg', express.static(join(__dirname, '..')));
 
 // TODO: envify
 app.get('/pug.bundle.js', browserify(['pug'], {
@@ -32,6 +32,12 @@ app.get('/language.bundle.js', browserify(join(__dirname, 'entry', 'language.js'
     babelify
   ],
   external: ['pug'],
+  ignore: ['http', 'https']
+}));
+app.get('/langdetect.bundle.js', browserify(join(__dirname, 'entry', 'langdetect.js'), {
+  transform: [
+    babelify
+  ],
   ignore: ['http', 'https']
 }));
 
@@ -84,6 +90,8 @@ app.use((req, res, next) => {
   let html = renderMd(lang, src);
   res.send(html);
 });
+
+app.use(express.static(join(__dirname, '..', 'htdocs')));
 
 app.listen(process.env.PORT || 3000);
 console.log('Listening on http://localhost:' + (process.env.PORT || 3000));
