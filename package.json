@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/pugjs/pug-www/#readme",
   "dependencies": {
-    "accept-language": "^2.0.17",
+    "accept-language": "tinganho/node-accept-language#59cf248f77dd7b52d7a0c3397f1cc3b71974ea72",
     "babel-register": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify-middleware": "^7.0.0",
