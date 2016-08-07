@@ -44,6 +44,7 @@
     "bootstrap": "^4.0.0-alpha.3",
     "browserify": "^13.0.1",
     "cheerio": "^0.20.0",
+    "envify": "^3.4.1",
     "eslint-config-xo-react": "^0.8.0",
     "eslint-plugin-react": "^6.0.0",
     "front-matter": "^2.1.0",
@@ -52,6 +53,7 @@
     "markdown-it-container": "^2.0.0",
     "react-dom": "^15.1.0",
     "resolve": "^1.1.7",
+    "stop": "^3.0.1",
     "xo": "^0.16.0"
   }
 }

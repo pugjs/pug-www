@@ -4,6 +4,7 @@ import {dirname, join, resolve} from 'path';
 import acceptLanguage from 'accept-language';
 import babelify from 'babelify';
 import browserify from 'browserify-middleware';
+import envify from 'envify';
 import express from 'express';
 import jst from 'jstransformer';
 import jstScss from 'jstransformer-scss';
@@ -16,33 +17,25 @@ const scss = jst(jstScss);
 
 const app = express();
 
-// TODO: envify
-app.get('/pug.bundle.js', browserify(['pug'], {
+browserify.settings.mode = 'development';
+
+app.get('/js/pug.js', browserify(['pug'], {
+  transform: [
+    envify
+  ],
   ignore: ['http', 'https']
 }));
-app.get('/generic.bundle.js', browserify(join(__dirname, 'entry', 'generic.js'), {
+app.use('/js', browserify(join(__dirname, 'entry'), {
   transform: [
-    babelify
+    babelify,
+    envify
   ],
   external: ['pug'],
-  ignore: ['http', 'https']
-}));
-app.get('/language.bundle.js', browserify(join(__dirname, 'entry', 'language.js'), {
-  transform: [
-    babelify
-  ],
-  external: ['pug'],
-  ignore: ['http', 'https']
-}));
-app.get('/langdetect.bundle.js', browserify(join(__dirname, 'entry', 'langdetect.js'), {
-  transform: [
-    babelify
-  ],
   ignore: ['http', 'https']
 }));
 
 const styleCache = {};
-app.get('/style.css', (req, res, next) => {
+app.get('/css/style.css', (req, res, next) => {
   const src = scss.renderFile(join(__dirname, '..', 'scss', 'docs.scss'), {
     importer: [
       (url, fileContext) => {
@@ -93,5 +86,4 @@ app.use((req, res, next) => {
 
 app.use(express.static(join(__dirname, '..', 'htdocs')));
 
-app.listen(process.env.PORT || 3000);
-console.log('Listening on http://localhost:' + (process.env.PORT || 3000));
+export default app;
