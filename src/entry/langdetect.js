@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 import acceptLanguage from 'accept-language';
 import langs from '../../langs.json';
 

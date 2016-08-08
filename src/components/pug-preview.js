@@ -58,6 +58,13 @@ export default class PugPreview extends React.Component {
     };
   }
 
+  static get propTypes() {
+    return {
+      files: React.PropTypes.array.isRequired,
+      main: React.PropTypes.string
+    };
+  }
+
   render() {
     let output;
 
@@ -83,12 +90,12 @@ export default class PugPreview extends React.Component {
         <div className="col-lg-6">
         {
           this.state.files.map((file, i) => (
-            <CodeMirror key={file.name} value={file.contents} onChange={this.updateCode.bind(this, i)} mode={file.mode} readOnly={file.readOnly} {...options} />
+            <CodeMirror key={file.name} value={file.contents} onChange={this.updateCode.bind(this, i)} mode={file.mode} readOnly={file.readOnly} {...options}/>
           ))
         }
         </div>
         <div className="col-lg-6">
-          <CodeMirror value={output} mode="htmlmixed" readOnly {...options} />
+          <CodeMirror value={output} mode="htmlmixed" readOnly {...options}/>
         </div>
       </div>
     );

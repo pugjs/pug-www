@@ -39,7 +39,7 @@ export default function renderPreview({str, lang, config = {}, env}) {
     const i = previews[env.id].push(config) - 1;
 
     return `<div class="preview-wrapper" data-control="interactive" data-index=${i}>${
-      renderToString(<PugPreview {...config} />)
+      renderToString(<PugPreview {...config}/>)
     }</div>`;
   } else if (lang === 'pug-preview-readonly') {
     const files = str.split(/\\{10}/).slice(1).reduce((prev, cur) => {
@@ -58,6 +58,6 @@ export default function renderPreview({str, lang, config = {}, env}) {
 
     config.files = files;
 
-    return renderToString(<PugPreviewReadonly {...{config, env}} />);
+    return renderToString(<PugPreviewReadonly {...{config, env}}/>);
   }
 }

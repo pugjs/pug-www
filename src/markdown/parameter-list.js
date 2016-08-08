@@ -1,28 +1,5 @@
 import {compile} from 'pug';
 
-const getTypeClass = str => {
-  const typeToClass = {
-    boolean: 'boolean',
-    class: 'function',
-    options: 'object',
-    string: 'string'
-  };
-
-  if (str.indexOf('|') !== -1) {
-    return '';
-  }
-
-  if (typeToClass[str]) {
-    return typeToClass[str];
-  }
-
-  if (str.toLowerCase().indexOf('array') === 0) {
-    return 'array';
-  }
-
-  return '';
-};
-
 const getParams = (md, str) =>
   str.trim().split('\n').reduce((params, curLine, i) => {
     curLine = curLine.trim();
@@ -34,7 +11,6 @@ const getParams = (md, str) =>
       curLine = curLine.substr(1).trim();
 
       if (i % 3 === 1) {
-        // param.class = getTypeClass(curLine);
         param.type = curLine;
       } else {
         param.description = md.renderInline(curLine);

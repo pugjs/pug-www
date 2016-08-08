@@ -1,4 +1,6 @@
+import {toConstant} from 'constantinople';
 import {Lexer} from 'pug-lexer';
+
 import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 import renderDoctypes from './doctypes.js';
 import renderParams from './parameter-list.js';
@@ -27,7 +29,7 @@ export default function mdItCodeBlock(md) {
       if (res) {
         const attrs = lexer.tokens.slice(1, -1);
         attrs.forEach(({name, val}) => {
-          config[name] = eval(val)
+          config[name] = toConstant(val);
         });
       }
     }

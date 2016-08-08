@@ -20,7 +20,7 @@ md.use(mdItContainer, 'card', {
   validate(params) {
     return /^float\s+(.*)$/.test(params.trim());
   },
-  render(tokens, idx, options, env) {
+  render(tokens, idx) {
     const tok = tokens[idx];
     const m = tok.info.trim().match(/^float\s+([^ ]*)(.*)$/);
 
