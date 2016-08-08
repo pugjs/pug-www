@@ -1,18 +1,19 @@
 import {readFileSync} from 'fs';
 import {dirname, join, resolve} from 'path';
 
-import acceptLanguage from 'accept-language';
 import babelify from 'babelify';
 import browserify from 'browserify-middleware';
 import envify from 'envify';
 import express from 'express';
 import jst from 'jstransformer';
+import jstAutoprefixer from 'jstransformer-autoprefixer';
 import jstScss from 'jstransformer-scss';
-import nodeResolve from 'resolve';
+import {sync as nodeResolve} from 'resolve';
 import Promise from 'promise';
 import request from 'then-request';
 import renderMd from './markdown';
 
+const autoprefixer = jst(jstAutoprefixer);
 const scss = jst(jstScss);
 
 const app = express();
@@ -36,37 +37,49 @@ app.use('/js', browserify(join(__dirname, 'entry'), {
 
 const styleCache = {};
 app.get('/css/style.css', (req, res, next) => {
-  const src = scss.renderFile(join(__dirname, '..', 'scss', 'docs.scss'), {
+  scss.renderFileAsync(join(__dirname, '..', 'scss', 'docs.scss'), {
     importer: [
       (url, fileContext) => {
+        let file;
+
         if (url[0] === '~') {
-          return {file: nodeResolve.sync(url.substr(1), {basedir: dirname(fileContext)})};
+          file = nodeResolve(url.substr(1), {basedir: dirname(fileContext)});
         } else {
-          return {file: resolve(dirname(fileContext), url)};
+          file = resolve(dirname(fileContext), url);
         }
-      },
-    ],
-  }).body;
-  const paths = [];
-  const contents = {};
-  src.replace(/@import url\(([^\)]+)\)/g, (_, path) => paths.push(path));
-  Promise.all(paths.map(p => {
-    if (/^https?:\/\//.test(p)) {
-      if (styleCache[p]) {
-        contents[p] = styleCache[p];
-      } else {
-        return request('GET', p).getBody('utf8').then(body => {
-          styleCache[p] = body;
-          contents[p] = body;
-        });
+
+        return {file};
       }
-    } else {
-      contents[p] = readFileSync(p, 'utf8');
-    }
-  })).done(() => {
+    ]
+  }).then(({body}) => {
+    const paths = [];
+    const contents = {};
+    body.replace(/@import url\(([^\)]+)\)/g, (_, path) => paths.push(path));
+
+    return Promise.all(paths.map(p => {
+      if (/^https?:\/\//.test(p)) {
+        if (styleCache[p]) {
+          contents[p] = styleCache[p];
+        } else {
+          return request('GET', p).getBody('utf8').then(body => {
+            styleCache[p] = body;
+            contents[p] = body;
+          });
+        }
+      } else {
+        contents[p] = readFileSync(p, 'utf8');
+      }
+
+      return null;
+    })).then(() => {
+      return body.replace(/@import url\(([^\)]+)\)/g, (_, path) => contents[path]);
+    });
+  }).then(body => {
+    return autoprefixer.renderAsync(body, {});
+  }).then(({body}) => {
     res.type('css');
-    res.send(src.replace(/@import url\(([^\)]+)\)/g, (_, path) => contents[path]));
-  }, next);
+    res.send(body);
+  }).catch(next);
 });
 
 app.use((req, res, next) => {
@@ -76,11 +89,13 @@ app.use((req, res, next) => {
   let src;
   try {
     src = readFileSync(`../pug-${lang}/src/${rest.join('/')}.md`, 'utf8');
-  } catch (ex) {
-    if (ex.code !== 'ENOENT') throw ex;
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err;
+    }
     return next();
   }
-  let html = renderMd(lang, src);
+  const html = renderMd(lang, src);
   res.send(html);
 });
 
