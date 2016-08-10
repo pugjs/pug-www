@@ -2,10 +2,10 @@ extends main.pug
 
 block content
   .col-lg-3.pull-lg-right
-    +nav
+    +nav.menu.inside
   .col-lg-9
     != rawHtml
 
 block after
   script(src='/js/pug.js')
-  script(src=`/js/generic.js`)
+  script(src='/js/generic.js')

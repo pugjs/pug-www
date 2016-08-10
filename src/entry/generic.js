@@ -1,5 +1,6 @@
 /* eslint-env browser */
 
-import pug from 'pug';
+import * as pug from 'pug';
+import '../browser/menu.js';
 
 window.pug = pug;

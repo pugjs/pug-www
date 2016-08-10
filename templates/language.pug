@@ -1,7 +1,7 @@
 extends main.pug
 
 block content
-  .col-lg-3.pull-lg-right
+  .col-lg-3.pull-lg-right.menu.inside
     +nav
   .col-lg-9
     != rawHtml
@@ -10,4 +10,6 @@ block after
   script.
     var demos=!{JSON.stringify(demos || [])};
   script(src='/js/pug.js')
+  each mod in extraMods || []
+    script(src=`https://wzrd.in/bundle/${mod}`)
   script(src='/js/language.js')

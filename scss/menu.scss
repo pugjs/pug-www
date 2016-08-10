@@ -1,0 +1,46 @@
+.menu.inside {
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+
+// Leave 50px of original page in
+$main-left: 50px;
+// Reserve 20px for the toggle toggle
+$toggle-width: 20px;
+
+.menu.outside {
+  position: fixed;
+  left: 0;
+  transform: translate3d(calc(100% - #{$toggle-width}), 0, 0);
+  width: 100%;
+  height: 100%;
+
+  z-index: 9999;
+
+  transition: transform 0.5s ease-in-out;
+
+  @include media-breakpoint-up(lg) {
+    visibility: hidden;
+  }
+
+  > .toggle {
+    position: fixed;
+    bottom: 10px;
+  }
+
+  > nav {
+    background: white;
+    margin-left: $toggle-width;
+    margin-right: $main-left; // FIXME
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  @include media-breakpoint-down(md) {
+    &.show {
+      transform: translate3d(#{$main-left}, 0, 0);
+    }
+  }
+}

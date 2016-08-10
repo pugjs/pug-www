@@ -1,23 +1,28 @@
 extends layout.pug
 
-mixin nav(prefix)
-  mixin navItem(path, noLink)
+mixin nav
+  mixin navGroup(path)
+    - var isCurrent = path === dirname(id)
+
+    a.nav-link= _.nav[path]
+
+    ul.nav.nav-pills.nav-stacked
+      block
+
+  mixin navItem(path)
     a.nav-link(
-      href=noLink ? false : relative(dirname(id), path + '.html')
-      class={
-        active: !noLink && path === id
-      }
+      href=relative(dirname(id), path + '.html')
+      class={active: path === id}
     )= _.nav[path]
 
   // nav placeholder
-  nav.nav.nav-pills.nav-stacked
-    +navItem('api', true)
-    ul.nav.nav-pills.nav-stacked
+  nav.nav.nav-pills.nav-stacked&attributes(attributes)
+    +navGroup('api')
       +navItem('api/getting-started')
       +navItem('api/express')
       +navItem('api/reference')
-    +navItem('language', true)
-    ul.nav.nav-pills.nav-stacked
+
+    +navGroup('language')
       +navItem('language/attributes')
       +navItem('language/case')
       +navItem('language/code')
@@ -38,7 +43,11 @@ block head
   title #{title} &ndash; Pug
 
 block body
-  //- nav.navbar.navbar-light.bg-faded
+  aside.menu.outside.hidden
+    //- FIXME
+    a.toggle O
+    +nav
+
   nav.navbar.navbar-full.navbar-dark.bg-primary
     .container
       a.navbar-brand(href='/') pug

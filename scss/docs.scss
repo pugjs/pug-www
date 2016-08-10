@@ -1,25 +1,60 @@
 @import "~codemirror/lib/codemirror.css";
 @import "base.scss";
+@import "menu.scss";
 
-.CodeMirror {
-  height: auto;
-  border: 2px solid black;
-  margin: 0 -8px 1rem -8px;
-}
+// Code previews
 
-.CodeMirror pre {
-  font-size: 90%;
-  padding: 0 6px;
-}
+$preview-border: 2px;
+$preview-padding: 6px;
+$preview-total-extra: $preview-border + $preview-padding;
 
-.CodeMirror-lines {
-  padding: 6px 0;
+pre {
+  background-color: white;
+  border: $preview-border solid black;
+  padding: $preview-padding;
+  margin-left: -$preview-total-extra;
+  margin-right: -$preview-total-extra;
 }
 
 .preview-wrapper {
   margin-top: 16px;
   margin-bottom: 16px;
+
+  textarea {
+    width: 100%;
+    min-height: 140px;
+
+    font-family: $font-family-monospace;
+    font-size: $code-font-size;
+    color: $pre-color;
+
+    background-color: white;
+    border: $preview-border solid black;
+    padding: $preview-padding;
+    margin-left: -$preview-total-extra;
+    margin-right: -$preview-total-extra;
+
+    // For iOS
+    -webkit-appearance: none;
+  }
 }
+
+.CodeMirror {
+  height: auto;
+  border: $preview-border solid black;
+  margin: 0 (-$preview-total-extra) 1rem;
+}
+
+.CodeMirror pre {
+  font-size: 90%;
+  padding: 0 $preview-padding;
+}
+
+.CodeMirror-lines {
+  padding: $preview-padding 0;
+}
+
+// Header anchors
 
 .header-anchor {
   font-size: $small-font-size;
@@ -31,6 +66,8 @@
 :hover > .header-anchor {
   opacity: 1;
 }
+
+// Parameter lists
 
 .parameter-list {
   dt {
@@ -46,6 +83,8 @@
     color: $gray-light;
   }
 }
+
+// Navbar
 
 .navbar {
   margin-bottom: 20px;

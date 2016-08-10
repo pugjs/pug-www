@@ -1,10 +1,11 @@
 /* eslint-env browser */
 /* global demos */
 
-import pug from 'pug';
+import * as pug from 'pug';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import '../browser/menu.js';
 import PugPreview from '../components/pug-preview.js';
 
 window.pug = pug;
