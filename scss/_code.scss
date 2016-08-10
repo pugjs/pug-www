@@ -1,0 +1,55 @@
+// Fix whitespace behavior
+code {
+  white-space: pre-wrap;
+}
+
+// Code previews
+$preview-border: 2px;
+$preview-padding: 6px;
+$preview-total-extra: $preview-border + $preview-padding;
+
+pre {
+  background-color: white;
+  border: $preview-border solid black;
+  padding: $preview-padding;
+  margin-left: -$preview-total-extra;
+  margin-right: -$preview-total-extra;
+}
+
+.preview-wrapper {
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  textarea {
+    width: 100%;
+    min-height: 140px;
+
+    font-family: $font-family-monospace;
+    font-size: $code-font-size;
+    color: $pre-color;
+
+    background-color: white;
+    border: $preview-border solid black;
+    padding: $preview-padding;
+    margin-left: -$preview-total-extra;
+    margin-right: -$preview-total-extra;
+
+    // For iOS
+    -webkit-appearance: none;
+  }
+}
+
+.CodeMirror {
+  height: auto;
+  border: $preview-border solid black;
+  margin: 0 (-$preview-total-extra) 1rem;
+}
+
+.CodeMirror pre {
+  font-size: 90%;
+  padding: 0 $preview-padding;
+}
+
+.CodeMirror-lines {
+  padding: $preview-padding 0;
+}

@@ -1,0 +1,14 @@
+// Heading (inaccurately, header) anchors
+
+.header-anchor {
+  font-size: $small-font-size;
+
+  @include media-breakpoint-up(lg) {
+    opacity: 0;
+    transition: opacity .5s ease-out;
+
+    :hover > & {
+      opacity: 1;
+    }
+  }
+}

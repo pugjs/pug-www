@@ -1,101 +1,12 @@
+// Moved to HTML
+// @import url(https://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic|PT+Sans:400,400italic,700,700italic);
+
 @import "~codemirror/lib/codemirror.css";
-@import "base.scss";
-@import "menu.scss";
+@import "_variables.scss";
+@import "~bootstrap/scss/bootstrap.scss";
 
-// Code previews
-
-$preview-border: 2px;
-$preview-padding: 6px;
-$preview-total-extra: $preview-border + $preview-padding;
-
-pre {
-  background-color: white;
-  border: $preview-border solid black;
-  padding: $preview-padding;
-  margin-left: -$preview-total-extra;
-  margin-right: -$preview-total-extra;
-}
-
-.preview-wrapper {
-  margin-top: 16px;
-  margin-bottom: 16px;
-
-  textarea {
-    width: 100%;
-    min-height: 140px;
-
-    font-family: $font-family-monospace;
-    font-size: $code-font-size;
-    color: $pre-color;
-
-    background-color: white;
-    border: $preview-border solid black;
-    padding: $preview-padding;
-    margin-left: -$preview-total-extra;
-    margin-right: -$preview-total-extra;
-
-    // For iOS
-    -webkit-appearance: none;
-  }
-}
-
-.CodeMirror {
-  height: auto;
-  border: $preview-border solid black;
-  margin: 0 (-$preview-total-extra) 1rem;
-}
-
-.CodeMirror pre {
-  font-size: 90%;
-  padding: 0 $preview-padding;
-}
-
-.CodeMirror-lines {
-  padding: $preview-padding 0;
-}
-
-// Header anchors
-
-.header-anchor {
-  font-size: $small-font-size;
-  // font-size: 80%;
-  opacity: 0;
-  transition: opacity .5s ease-out;
-}
-
-:hover > .header-anchor {
-  opacity: 1;
-}
-
-// Parameter lists
-
-.parameter-list {
-  dt {
-    font-family: $font-family-monospace;
-    font-size: $font-size-h6;
-  }
-
-  dd {
-    margin-left: 1rem;
-  }
-
-  .type {
-    color: $gray-light;
-  }
-}
-
-// Navbar
-
-.navbar {
-  margin-bottom: 20px;
-
-  .navbar-brand {
-    font-family: $headings-font-family;
-    font-size: 30px;
-
-    // original font-size is 20px; line-height is 1.5
-    // 3:1 ratio is arbitrary
-    margin-top: (20px - 30px) * 1.5 * 0.75;
-    margin-bottom: (20px - 30px) * 1.5 * 0.25;
-  }
-}
+@import "_anchor.scss";
+@import "_code.scss";
+@import "_menu.scss";
+@import "_navbar.scss";
+@import "_parameter-list.scss";

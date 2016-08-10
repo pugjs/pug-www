@@ -1,8 +1,18 @@
+// Indent pills
+.nav-pills.nav-stacked {
+  .nav-pills.nav-stacked {
+    padding-left: 1rem;
+  }
+}
+
+// Desktop menu
 .menu.inside {
   @include media-breakpoint-down(md) {
     display: none;
   }
 }
+
+// Mobile menu
 
 // Leave 50px of original page in
 $main-left: 50px;

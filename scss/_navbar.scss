@@ -1,0 +1,16 @@
+// Navbar
+
+.navbar {
+  margin-bottom: 20px;
+
+  .navbar-brand {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    font-size: 30px;
+
+    // original font-size is 20px; line-height is 1.5
+    // 3:1 ratio is arbitrary
+    margin-top: (20px - 30px) * 1.5 * 0.75;
+    margin-bottom: (20px - 30px) * 1.5 * 0.25;
+  }
+}

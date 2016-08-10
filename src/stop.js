@@ -1,9 +1,8 @@
+import {removeAsync} from 'fs-extra-promise';
 import {createServer} from 'http';
 import {parse as urlParse} from 'url';
 import {join} from 'path';
-import {denodeify} from 'promise';
-import rimraf from 'rimraf';
-import stop from 'stop';
+import stop from '@timothygu/stop';
 
 import app from './index.js';
 
@@ -12,7 +11,7 @@ process.env.NODE_ENV = 'production';
 const server = createServer(app);
 const output = join(__dirname, '..', 'output');
 
-denodeify(rimraf)(output).then(() => {
+removeAsync(output).then(() => {
   return new Promise((resolve, reject) => {
     server.listen(0);
     server.on('error', reject);
