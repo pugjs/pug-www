@@ -26,9 +26,9 @@
     "browserify-middleware": "^7.0.0",
     "codemirror": "^5.15.2",
     "express": "^4.13.4",
-    "js-beautify": "TimothyGu/js-beautify#4c8c515802ef23e9f3a503826e313e52373d604c",
+    "js-beautify": "beautify-web/js-beautify#5a9fcfe8f7e53a84b3929fea881be60512e71608",
     "promise": "^7.1.1",
-    "pug": "^2.0.0-beta4",
+    "pug": "^2.0.0-beta5",
     "react": "^15.1.0",
     "react-code-mirror": "^3.0.6",
     "then-request": "^2.2.0"
@@ -56,6 +56,7 @@
     "pug-lexer": "^2.0.3",
     "react-dom": "^15.1.0",
     "resolve": "^1.1.7",
+    "rimraf": "^2.5.4",
     "stop": "^3.0.1",
     "xo": "^0.16.0"
   }
