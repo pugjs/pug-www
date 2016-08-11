@@ -1,0 +1,34 @@
+doctype
+
+include _menu.pug
+
+html(lang=lang)
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic|PT+Sans:400,400italic,700,700italic")
+    link(rel="stylesheet" href="/css/style.css")
+    title #{title} &ndash; Pug
+
+  body
+    aside.menu.outside
+      //- FIXME
+      a.toggle
+        img(src='/tab.svg')
+      +menu
+
+    nav.navbar.navbar-full.navbar-dark.bg-primary
+      .container
+        a.navbar-brand(href='/') pug
+        ul.nav.navbar-nav.pull-xs-right
+          li.nav-item.active
+            a.nav-link(href=`/${lang}/api/getting-started.html`)= _.navbar.docs
+          li.nav-item
+            a.nav-link(href=`/${lang}/`)= _.navbar.demo
+          li.nav-item
+            a.nav-link(href='https://github.com/pugjs/pug') GitHub
+
+    .container
+      block content
+
+    block after
