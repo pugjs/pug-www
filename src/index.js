@@ -43,6 +43,10 @@ app.use((req, res, next) => {
   rest.push((rest.pop() || 'index').replace(/\.html$/, ''));
   const path = rest.join('/');
 
+  if (!lang) {
+    return next();
+  }
+
   (path === 'index' ? renderMainPage(lang) : renderMd(lang, path))
   .then(html => res.send(html))
   .catch(err => {

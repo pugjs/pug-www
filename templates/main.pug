@@ -16,7 +16,7 @@ mixin nav
     )= _.nav[path]
 
   // nav placeholder
-  nav.nav.nav-pills.nav-stacked&attributes(attributes)
+  nav.nav.nav-pills.nav-stacked
     +navGroup('api')
       +navItem('api/getting-started')
       +navItem('api/express')
@@ -53,9 +53,9 @@ block body
       a.navbar-brand(href='/') pug
       ul.nav.navbar-nav.pull-xs-right
         li.nav-item.active
-          a.nav-link(href='/')= _.navbar.docs
+          a.nav-link(href=`/${lang}/api/getting-started.html`)= _.navbar.docs
         li.nav-item
-          a.nav-link(href='/')= _.navbar.demo
+          a.nav-link(href=`/${lang}/`)= _.navbar.demo
         li.nav-item
           a.nav-link(href='https://github.com/pugjs/pug') GitHub
 
