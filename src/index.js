@@ -53,7 +53,6 @@ app.use((req, res, next) => {
     if (err.code !== 'ENOENT') {
       throw err;
     }
-    console.log(err);
     return next();
   }).catch(next);
 });

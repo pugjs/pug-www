@@ -1,3 +1,9 @@
+@import "~codemirror/lib/codemirror.css";
+
+.CodeMirror {
+  font-family: $font-family-monospace;
+}
+
 // Fix whitespace behavior
 code {
   white-space: pre-wrap;

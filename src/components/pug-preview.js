@@ -9,15 +9,20 @@ import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
 
+import detect from '../feature-detect/index.js';
+
 export default class PugPreview extends React.Component {
   constructor(props) {
     super(props);
 
-    const {files, main} = props;
+    const {files, main, features, output} = props;
     this.state = {
       files,
-      main: main || 'index.pug'
+      main
     };
+
+    this._inputs = [];
+    this._supported = detect(features);
 
     this.findFile = filename => {
       for (let i = 0; i < this.state.files.length; i++) {
@@ -29,8 +34,9 @@ export default class PugPreview extends React.Component {
     };
 
     this.updateCode = (i, {target: {value}}) => {
-      this.state.files[i].contents = value;
-      this.setState({files: this.state.files});
+      const {files} = this.state;
+      files[i].contents = value;
+      this.setState({files});
     };
 
     this.options = {
@@ -61,20 +67,43 @@ export default class PugPreview extends React.Component {
   static get propTypes() {
     return {
       files: React.PropTypes.array.isRequired,
-      main: React.PropTypes.string
+      main: React.PropTypes.string,
+      features: React.PropTypes.array,
+      output: React.PropTypes.string
     };
+  }
+
+  componentDidMount() {
+    if (process.env.NODE_ENV !== 'production' && !this._supported) {
+      this._inputs.forEach(({editor}) => {
+        editor.on('keypress', () => {
+          // TODO: tell the user their browser is too old
+        });
+      });
+    }
+  }
+
+  static get defaultProps() {
+    return {
+      main: 'index.pug',
+      features: []
+    }
   }
 
   render() {
     let output;
 
-    try {
-      output = pug.render(this.findFile(this.state.main).contents, Object.assign({
-        filename: this.state.main
-      }, this.options)).trim();
-      output = beautifyHtml(output);
-    } catch (err) {
-      output = err.message;
+    if (!this._supported) {
+      output = this.props.output;
+    } else {
+      try {
+        output = pug.render(this.findFile(this.state.main).contents, Object.assign({
+          filename: this.state.main
+        }, this.options)).trim();
+        output = beautifyHtml(output);
+      } catch (err) {
+        output = err.message;
+      }
     }
 
     const options = {
@@ -82,20 +111,31 @@ export default class PugPreview extends React.Component {
       viewportMargin: Infinity,
       indentUnit: 2,
       indentWithTabs: false,
-      tabSize: 2
+      tabSize: 2,
+      extraKeys: {
+        Tab: (cm) => {
+          const spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
+          cm.replaceSelection(spaces);
+        }
+      }
     };
+
+    // HACK
+    if (process.env.NODE_ENV !== 'production' && this.props.renderOnly) {
+      return <pre dangerouslySetInnerHTML={{__html: output}}/>;
+    }
 
     return (
       <div className="row">
         <div className="col-lg-6">
         {
           this.state.files.map((file, i) => (
-            <CodeMirror key={file.name} value={file.contents} onChange={this.updateCode.bind(this, i)} mode={file.mode} readOnly={file.readOnly} {...options}/>
+            <CodeMirror ref={c => this._inputs.push(c)} key={file.name} value={file.contents} onChange={this.updateCode.bind(this, i)} mode={file.mode} readOnly={file.readOnly || !this._supported} {...options}/>
           ))
         }
         </div>
         <div className="col-lg-6">
-          <CodeMirror value={output} mode="htmlmixed" readOnly {...options}/>
+          <CodeMirror value={output} mode="htmlmixed" readOnly="nocursor" {...options}/>
         </div>
       </div>
     );

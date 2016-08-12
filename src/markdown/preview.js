@@ -1,6 +1,6 @@
 import {basename, extname} from 'path';
 import React from 'react';
-import {renderToString} from 'react-dom/server';
+import {renderToString, renderToStaticMarkup} from 'react-dom/server';
 
 import PugPreview from '../components/pug-preview.js';
 import PugPreviewReadonly from '../components/pug-preview-readonly.js';
@@ -37,6 +37,11 @@ export default function renderPreview({str, lang, config = {}, env}) {
       previews[env.id] = [];
     }
     const i = previews[env.id].push(config) - 1;
+
+    if (config.features) {
+      const rendered = renderToStaticMarkup(<PugPreview renderOnly {...config}/>);
+      config.output = rendered.substring('<pre>'.length, rendered.length - '</pre>'.length);
+    }
 
     return `<div class="preview-wrapper" data-control="interactive" data-index=${i}>${
       renderToString(<PugPreview {...config}/>)

@@ -28,10 +28,12 @@ removeAsync(output).then(() => {
     filter: currentURL => urlParse(currentURL).hostname === 'localhost',
     parallel: 1
   })
-  .syphon(stop.minifyJS())
+  .syphon(stop.minifyJS({
+    warnings: false
+  }))
   .syphon(stop.minifyCSS())
   .syphon(stop.log())
-  .syphon(stop.checkStatusCodes([200, /* FIXME */ 404]))
+  .syphon(stop.checkStatusCodes([200]))
   .syphon(stop.writeFileSystem(output))
   .wait();
 }).then(() => {
