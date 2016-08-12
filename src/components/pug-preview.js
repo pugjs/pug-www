@@ -33,7 +33,7 @@ export default class PugPreview extends React.Component {
       return null;
     };
 
-    this.updateCode = (i, {target: {value}}) => {
+    this.genUpdateFunc = (i) => ({target: {value}}) => {
       const {files} = this.state;
       files[i].contents = value;
       this.setState({files});
@@ -130,7 +130,7 @@ export default class PugPreview extends React.Component {
         <div className="col-lg-6">
         {
           this.state.files.map((file, i) => (
-            <CodeMirror ref={c => this._inputs.push(c)} key={file.name} value={file.contents} onChange={this.updateCode.bind(this, i)} mode={file.mode} readOnly={file.readOnly || !this._supported} {...options}/>
+            <CodeMirror ref={c => this._inputs.push(c)} key={file.name} value={file.contents} onChange={this.genUpdateFunc(i)} mode={file.mode} readOnly={file.readOnly || !this._supported} {...options}/>
           ))
         }
         </div>
