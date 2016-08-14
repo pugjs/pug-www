@@ -21,7 +21,7 @@ app.get('/js/pug.js', browserify(['pug'], {
 }));
 
 app.use('/js/bundle/:package', (req, res, next) => {
-  const pkgs = req.params.package.split(',');
+  const pkgs = req.params.package.split('.')[0].split(',');
   return browserify(pkgs, {
     // cache the package bundle as they take such a long time to make
     precompile: true,
