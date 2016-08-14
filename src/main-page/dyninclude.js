@@ -12,11 +12,11 @@ const interpolate = (origTok, locals) => {
     if (tok.type === 'text') {
       str += tok.val;
     } else if (tok.type === 'interpolated-code') {
-      if (locals[tok.val] != null) {
-        str += locals[tok.val];
-      } else {
+      if (locals[tok.val] == null) {
         lexer.colno = tok.col;
         lexer.error('DYNINCLUDE_UNDEFINED_VARIABLE', `Variable "${tok.val}" is not defined`);
+      } else {
+        str += locals[tok.val];
       }
     } else {
       lexer.colno = tok.col;
@@ -25,7 +25,7 @@ const interpolate = (origTok, locals) => {
 
     return str;
   }, '');
-}
+};
 
 export default (locals = {}) => {
   return {

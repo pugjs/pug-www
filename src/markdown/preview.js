@@ -63,6 +63,6 @@ export default function renderPreview({str, lang, config = {}, env}) {
 
     config.files = files;
 
-    return renderToString(<PugPreviewReadonly {...{config, env}}/>);
+    return renderToStaticMarkup(<PugPreviewReadonly {...{config, env}}/>);
   }
 }

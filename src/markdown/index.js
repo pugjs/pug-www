@@ -1,7 +1,7 @@
-import {readFileAsync} from 'fs-extra-promise';
 import {dirname, relative} from 'path';
 
 import fm from 'front-matter';
+import {readFileAsync} from 'fs-extra-promise';
 import {renderFile} from 'pug';
 
 import {md, tmpl} from '../utils/paths.js';
@@ -13,12 +13,12 @@ export default async (lang, path) => {
   const {attributes, body} = fm(src);
   const {template, id} = attributes;
 
-  let rendered = markdown.render(body, {
+  const demos = previews[id] = [];
+
+  const rendered = markdown.render(body, {
     lang,
     id
   });
-
-  const demos = previews[id] || [];
 
   return renderFile(tmpl(template), Object.assign({
     lang,

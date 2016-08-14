@@ -1,5 +1,6 @@
 // Stolen from Modernizr (MIT license)
 
+/* eslint-disable xo/catch-error-name no-implicit-coercion */
 const tests = {
   templatestrings: () => {
     let supports;
@@ -13,5 +14,6 @@ const tests = {
     return !!supports;
   }
 };
+/* eslint-enable xo/catch-error-name no-implicit-coercion */
 
 export default funcs => funcs.every(func => tests[func]());

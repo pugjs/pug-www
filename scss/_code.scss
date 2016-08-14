@@ -1,9 +1,5 @@
 @import "~codemirror/lib/codemirror.css";
 
-.CodeMirror {
-  font-family: $font-family-monospace;
-}
-
 // Fix whitespace behavior
 code {
   white-space: pre-wrap;
@@ -40,6 +36,10 @@ pre {
     margin-left: -$preview-total-extra;
     margin-right: -$preview-total-extra;
 
+    overflow-x: scroll;
+    white-space: pre;
+    overflow-wrap: normal;
+
     // For iOS
     -webkit-appearance: none;
   }
@@ -49,6 +49,7 @@ pre {
   height: auto;
   border: $preview-border solid black;
   margin: 0 (-$preview-total-extra) 1rem;
+  font-family: $font-family-monospace;
 }
 
 .CodeMirror pre {

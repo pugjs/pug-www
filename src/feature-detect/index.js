@@ -1,1 +1,1 @@
-export default funcs => true;
+export default () => true;

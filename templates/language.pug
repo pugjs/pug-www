@@ -4,6 +4,6 @@ block after
   script.
     var demos=!{JSON.stringify(demos || [])};
   script(src='/js/pug.js')
-  each mod in extraMods || []
-    script(src=`https://wzrd.in/bundle/${mod}`)
+  if extraMods && extraMods.length
+    script(src=`/js/bundle/${extraMods.map(m => m.split('@')[0]).join(',')}`)
   script(src='/js/language.js')

@@ -1,4 +1,4 @@
-import {dirname, join} from 'path';
+import {join} from 'path';
 
 import babelify from 'babelify';
 import browserify from 'browserify-middleware';
@@ -19,6 +19,18 @@ app.get('/js/pug.js', browserify(['pug'], {
   ],
   ignore: ['http', 'https']
 }));
+
+app.use('/js/bundle/:package', (req, res, next) => {
+  const pkgs = req.params.package.split(',');
+  return browserify(pkgs, {
+    // cache the package bundle as they take such a long time to make
+    precompile: true,
+    transform: [
+      envify
+    ]
+  })(req, res, next);
+});
+
 app.use('/js', browserify(join(__dirname, 'entry'), {
   transform: [
     babelify.configure({

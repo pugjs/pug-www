@@ -1,5 +1,7 @@
 import {resolve, dirname, relative} from 'path';
+
 import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html.js';
+import objectAssign from 'object-assign';
 import pug from 'pug';
 import React from 'react';
 import CodeMirror from '@timothygu/react-code-mirror';
@@ -15,7 +17,7 @@ export default class PugPreview extends React.Component {
   constructor(props) {
     super(props);
 
-    const {files, main, features, output} = props;
+    const {files, main, features} = props;
     this.state = {
       files,
       main
@@ -33,7 +35,7 @@ export default class PugPreview extends React.Component {
       return null;
     };
 
-    this.genUpdateFunc = (i) => ({target: {value}}) => {
+    this.genUpdateFunc = i => ({target: {value}}) => {
       const {files} = this.state;
       files[i].contents = value;
       this.setState({files});
@@ -49,7 +51,7 @@ export default class PugPreview extends React.Component {
             const prop = relative(process.cwd(), resolved);
 
             if (!this.findFile(prop)) {
-              throw Object.assign(new Error(`ENOENT: no such file or directory, open ${resolved}`), {
+              throw objectAssign(new Error(`ENOENT: no such file or directory, open ${resolved}`), {
                 errno: -4058,
                 code: 'ENOENT',
                 syscall: 'open',
@@ -87,23 +89,23 @@ export default class PugPreview extends React.Component {
     return {
       main: 'index.pug',
       features: []
-    }
+    };
   }
 
   render() {
     let output;
 
-    if (!this._supported) {
-      output = this.props.output;
-    } else {
+    if (this._supported) {
       try {
-        output = pug.render(this.findFile(this.state.main).contents, Object.assign({
+        output = pug.render(this.findFile(this.state.main).contents, objectAssign({
           filename: this.state.main
         }, this.options)).trim();
-        output = beautifyHtml(output);
+        output = beautifyHtml(output, {indent_size: 2});
       } catch (err) {
         output = err.message;
       }
+    } else {
+      output = this.props.output;
     }
 
     const options = {
@@ -113,7 +115,7 @@ export default class PugPreview extends React.Component {
       indentWithTabs: false,
       tabSize: 2,
       extraKeys: {
-        Tab: (cm) => {
+        Tab: cm => {
           const spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
           cm.replaceSelection(spaces);
         }

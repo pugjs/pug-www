@@ -1,7 +1,8 @@
-import {removeAsync} from 'fs-extra-promise';
 import {createServer} from 'http';
-import {parse as urlParse} from 'url';
 import {join} from 'path';
+import {parse as urlParse} from 'url';
+
+import {removeAsync} from 'fs-extra-promise';
 import stop from '@timothygu/stop';
 
 import app from './index.js';
