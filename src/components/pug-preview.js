@@ -137,7 +137,7 @@ export default class PugPreview extends React.Component {
         }
         </div>
         <div className="col-lg-6">
-          <CodeMirror value={output} mode="htmlmixed" readOnly="nocursor" {...options}/>
+          <CodeMirror value={output} mode="htmlmixed" readOnly={true} {...options}/>
         </div>
       </div>
     );
