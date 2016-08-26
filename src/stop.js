@@ -5,6 +5,7 @@ import {parse as urlParse} from 'url';
 import {removeAsync} from 'fs-extra-promise';
 import stop from '@timothygu/stop';
 
+import langs from '../langs.json';
 import app from './index.js';
 
 process.env.NODE_ENV = 'production';
@@ -25,7 +26,10 @@ removeAsync(output).then(() => {
     });
   });
 }).then(port => {
-  return stop.getWebsiteStream(`http://localhost:${port}/en/api/reference.html`, {
+  return stop.getWebsiteStream(langs.reduce((prev, lang) => prev.concat([
+    `${lang}/`,
+    `${lang}/api/getting-started.html`
+  ]), []).map(url => `http://localhost:${port}/${url}`), {
     filter: currentURL => urlParse(currentURL).hostname === 'localhost',
     parallel: 1
   })
