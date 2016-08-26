@@ -3,8 +3,8 @@ import React from 'react';
 import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 
 export default ({config: {files, demo}, env: {filename}}) => {
-  const positions = files.reduce((prev, {position}) => (prev.add(position), prev), new Set());
-  const innerClass = ['col-lg-6', 'col-lg-4'][positions.size - 2];
+  const positions = files.reduce((prev, {position}) => prev.add(position), new Set());
+  const innerClass = `col-lg-${12 / positions.size}`;
 
   if (!innerClass) {
     throw new Error(`Too many positions of pug-preview-readonly ${positions.size} in ${filename}`);
@@ -33,10 +33,10 @@ export default ({config: {files, demo}, env: {filename}}) => {
   return (
     <div>
       <div className="row">
-        {columns.map(col => (
-          <div className={innerClass}>
-            {col.map(file => (
-              <pre className={`preview-${file.mode} cm-s-default`}>
+        {columns.map((col, i) => (
+          <div className={innerClass} key={i}>
+            {col.map((file, j) => (
+              <pre className={`preview-${file.mode} cm-s-default`} key={`${i}-${j}`}>
                 <code dangerouslySetInnerHTML={{
                   __html: getCodeMirrorHTML(file.contents, file.mode).trim()
                 }}></code>
