@@ -38,7 +38,7 @@
     "babelify": "^7.3.0",
     "bootstrap": "^4.0.0-alpha.3",
     "browserify-middleware": "^7.0.0",
-    "codemirror": "^5.15.2",
+    "codemirror": "^5.18.2",
     "constantinople": "^3.1.0",
     "envify": "^3.4.1",
     "express": "^4.13.4",
@@ -52,8 +52,8 @@
     "markdown-it-anchor": "^2.5.0",
     "markdown-it-container": "^2.0.0",
     "object-assign": "^4.1.0",
-    "pug": "^2.0.0-beta5",
-    "pug-lexer": "^2.0.3",
+    "pug": "^2.0.0-beta6",
+    "pug-lexer": "^2.2.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "resolve": "^1.1.7",
@@ -67,7 +67,7 @@
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
     "jstransformer-coffee-script": "^1.1.0",
-    "jstransformer-markdown-it": "^0.2.3",
+    "jstransformer-markdown-it": "^1.0.0",
     "xo": "^0.16.0"
   },
   "browser": {

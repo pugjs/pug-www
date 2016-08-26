@@ -8,8 +8,8 @@ import CodeMirror from '@timothygu/react-code-mirror';
 
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/pug/pug';
 
 import detect from '../feature-detect/index.js';
 

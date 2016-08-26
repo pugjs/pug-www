@@ -1,8 +1,8 @@
 import {runMode} from 'codemirror/addon/runmode/runmode.node';
 import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/jade/jade';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/pug/pug';
 import 'codemirror/mode/shell/shell';
 
 import {runtime} from 'pug';
@@ -11,12 +11,11 @@ const normalizeMode = {
   css: 'css',
   html: 'htmlmixed',
   htmlmixed: 'htmlmixed',
-  jade: 'jade',
   javascript: 'javascript',
   js: 'javascript',
   markdown: 'markdown',
   md: 'markdown',
-  pug: 'jade',
+  pug: 'pug',
   sh: 'shell',
   shell: 'shell'
 };
