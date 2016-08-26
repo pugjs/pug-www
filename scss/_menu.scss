@@ -52,12 +52,13 @@ $transition: 0.3s ease-in-out;
   > .toggle {
     position: fixed;
     bottom: 10px;
+    cursor: pointer;
   }
 
   > nav {
     background: white;
     margin-left: $toggle-width;
-    margin-right: $main-left; // FIXME
+    margin-right: $main-left;
     overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
