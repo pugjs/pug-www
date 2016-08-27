@@ -4,6 +4,7 @@ import {parse as urlParse} from 'url';
 
 import {removeAsync} from 'fs-extra-promise';
 import stop from '@timothygu/stop';
+import s3 from 's3';
 
 import langs from '../langs.json';
 import app from './index.js';
@@ -43,8 +44,33 @@ removeAsync(output).then(() => {
   .wait();
 }).then(() => {
   console.log('success');
-  server.close(() => {
+  server.close();
+  if (process.env.S3_BUCKET) {
+    const client = s3.createClient({
+      s3Options: {
+        accessKeyId: process.env.S3_KEY,
+        secretAccessKey: process.env.S3_SECRET,
+        region: process.env.S3_REGION,
+      },
+    });
+    const uploader = client.uploadDir({
+      localDir: output,
+      deleteRemoved: true,
+      s3Params: {
+        Bucket: process.env.S3_BUCKET,
+        Prefix: ''
+      }
+    });
+    uploader.on('error', (err) => {
+      console.error('unable to sync:', err.stack);
+    });
+    uploader.on('end', () => {
+      console.log("done uploading website");
+      // HACK: for some reason, server.close() doesn't make the process exit
+      process.exit(0);
+    });
+  } else {
     // HACK: for some reason, server.close() doesn't make the process exit
     process.exit(0);
-  });
+  }
 });
