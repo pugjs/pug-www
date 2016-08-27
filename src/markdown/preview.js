@@ -11,7 +11,7 @@ import PugPreview from '../components/pug-preview.js';
 
 export const previews = {};
 
-export default function renderPreview({str, config = {}, env: {lang, id}}) {
+export default ({str, config, env: {filename}}) => {
   const splitted = str.split(/\\{10}/);
   const files = [];
 
@@ -23,25 +23,24 @@ export default function renderPreview({str, config = {}, env: {lang, id}}) {
     });
   } else {
     splitted.slice(1).forEach(cur => {
-      const [header, ...lines] = cur.split('\n');
-      const [name] = header.trim().split(/\s+/);
+      const [header, lines] = cur.split(/\n(.+)/);
+      const [name] = header.trim().split(/\s/);
       const ext = extname(name);
 
       files.push({
         name,
         mode: getMode(ext.substr(1)),
-        contents: lines.join('\n').trim()
+        contents: lines.trim()
       });
     });
   }
 
   config.files = files;
 
-  const key = `${lang}-${id}`;
-  if (!previews[key]) {
-    previews[key] = [];
+  if (!previews[filename]) {
+    previews[filename] = [];
   }
-  const i = previews[key].push(config) - 1;
+  const i = previews[filename].push(config) - 1;
 
   if (config.features) {
     const rendered = renderToStaticMarkup(<PugPreview renderOnly {...config}/>);

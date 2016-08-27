@@ -17,7 +17,11 @@ const parseInfo = (filename, info) => {
     if (lexer.attrs()) {
       const attrs = lexer.tokens.slice(1, -1);
       attrs.forEach(({name, val}) => {
-        config[name] = toConstant(val);
+        try {
+          config[name] = toConstant(val);
+        } catch (err) {
+          throw new Error(`${JSON.stringify(val)} is not constant; used in ${filename}`);
+        }
       });
     }
   }

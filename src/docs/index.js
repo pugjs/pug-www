@@ -8,13 +8,14 @@ import render, {previews} from '../markdown/';
 import {md, tmpl} from '../utils/paths.js';
 
 export default (lang, path) => {
-  const src = readFileSync(md(lang, path), 'utf8');
+  const filename = md(lang, path);
+  const src = readFileSync(filename, 'utf8');
   const {attributes, body} = fm(src);
   const {template, id} = attributes;
 
-  const demos = previews[`${lang}-${id}`] = [];
+  const demos = previews[filename] = [];
 
-  const rendered = render(body, {lang, id});
+  const rendered = render(body, {lang, id, filename});
 
   return renderFile(tmpl(template), Object.assign({
     lang,
