@@ -5,6 +5,9 @@ node_js:
 # Use faster Docker architecture on Travis.
 sudo: false
 
+install:
+  - npm i
+  - node get-langs
+
 script:
-  - npm test
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && node stop

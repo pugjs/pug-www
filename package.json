@@ -61,6 +61,7 @@
     "babel-preset-es2015": "^6.13.2",
     "eslint-config-xo-react": "^0.9.0",
     "eslint-plugin-react": "^6.0.0",
+    "gethub": "^2.0.2",
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
     "jstransformer-coffee-script": "^1.1.0",
