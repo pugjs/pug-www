@@ -53,7 +53,7 @@ export default () => {
   }));
 
   app.get('/css/style.css', (req, res) => {
-    const body = compileScss('docs.scss');
+    const body = compileScss('docs');
     res.type('css');
     res.send(body);
   });

@@ -1,11 +1,11 @@
 import gethub from 'gethub';
 
 import langs from '../langs.json';
-import {md} from './utils/paths.js';
+import {lang} from './utils/paths.js';
 
-Promise.all(langs.map(lang =>
-  gethub('pugjs', `pug-${lang}`, 'master', md(lang)).then(() => {
-    console.log(`pug-${lang} downloaded`);
+Promise.all(langs.map(l =>
+  gethub('pugjs', `pug-${l}`, 'master', lang(l)).then(() => {
+    console.log(`pug-${l} downloaded`);
   })
 )).then(() => {
   console.log('success');

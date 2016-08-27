@@ -6,17 +6,20 @@ import jstAutoprefixer from 'jstransformer-autoprefixer';
 import jstScss from 'jstransformer-scss';
 import {sync as nodeResolve} from 'resolve';
 
+import {scss as scssPath} from '../utils/paths.js';
+
 const autoprefixer = jst(jstAutoprefixer);
 const scss = jst(jstScss);
 
 const importer = [
   (url, fileContext) => {
     let file;
+    const basedir = dirname(fileContext);
 
     if (url[0] === '~') {
-      file = nodeResolve(url.substr(1), {basedir: dirname(fileContext)});
+      file = nodeResolve(url.substr(1), {basedir});
     } else {
-      file = resolve(dirname(fileContext), url);
+      file = resolve(basedir, url);
     }
 
     return {file};
@@ -24,21 +27,13 @@ const importer = [
 ];
 
 export default path => {
-  let {body} = scss.renderFile(`${__dirname}/../../scss/${path}`, {
+  let {body} = scss.renderFile(scssPath(path), {
     importer
   });
 
-  const paths = [];
-  const contents = {};
-  body.replace(/@import url\(([^\)]+)\)/g, (_, path) => paths.push(path));
-
-  paths.forEach(p => {
-    contents[p] = readFileSync(p, 'utf8');
+  body = body.replace(/@import url\(([^\)]+)\)/g, (_, p) => {
+    return readFileSync(p, 'utf8');
   });
 
-  body = body.replace(/@import url\(([^\)]+)\)/g, (_, path) => contents[path]);
-
-  const {body: prefixed} = autoprefixer.render(body);
-
-  return prefixed;
+  return autoprefixer.render(body).body;
 };
