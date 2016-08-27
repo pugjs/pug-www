@@ -9,67 +9,74 @@ import renderDocs from './docs';
 import renderMainPage from './main-page';
 import compileScss from './style';
 
-const app = express();
-
 browserify.settings.production.minify = false;
 browserify.settings.production.gzip = false;
 
-app.get('/js/pug.js', browserify(['pug'], {
-  precompile: true,
-  transform: [
-    envify
-  ],
-  ignore: ['http', 'https']
-}));
+export const setEnv = env => {
+  process.env.NODE_ENV = env;
+  browserify.settings.mode = env;
+};
 
-app.get('/js/filters.js', browserify([
-  'jstransformer-babel',
-  'babel-preset-es2015',
-  'jstransformer-cdata-js',
-  'jstransformer-coffee-script',
-  'jstransformer-markdown-it'
-], {
-  transform: [
-    envify
-  ]
-}));
+export default () => {
+  const app = express();
 
-app.use('/js', browserify(join(__dirname, 'entry'), {
-  transform: [
-    babelify.configure({
-      presets: ['es2015', 'react']
-    }),
-    envify
-  ],
-  external: ['pug'],
-  ignore: ['http', 'https']
-}));
+  app.get('/js/pug.js', browserify(['pug'], {
+    precompile: true,
+    transform: [
+      envify
+    ],
+    ignore: ['http', 'https']
+  }));
 
-app.get('/css/style.css', (req, res) => {
-  const body = compileScss('docs.scss');
-  res.type('css');
-  res.send(body);
-});
+  app.get('/js/filters.js', browserify([
+    'jstransformer-babel',
+    'babel-preset-es2015',
+    'jstransformer-cdata-js',
+    'jstransformer-coffee-script',
+    'jstransformer-markdown-it'
+  ], {
+    transform: [
+      envify
+    ]
+  }));
 
-app.use((req, res, next) => {
-  const [, lang, ...rest] = req.path.split('/');
-  rest.push((rest.pop() || 'index').replace(/\.html$/, ''));
-  const path = rest.join('/');
+  app.use('/js', browserify(join(__dirname, 'entry'), {
+    transform: [
+      babelify.configure({
+        presets: ['es2015', 'react']
+      }),
+      envify
+    ],
+    external: ['pug'],
+    ignore: ['http', 'https']
+  }));
 
-  if (!lang) {
-    return next();
-  }
+  app.get('/css/style.css', (req, res) => {
+    const body = compileScss('docs.scss');
+    res.type('css');
+    res.send(body);
+  });
 
-  try {
-    res.send(path === 'index' ? renderMainPage(lang) : renderDocs(lang, path));
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err;
+  app.use((req, res, next) => {
+    const [, lang, ...rest] = req.path.split('/');
+    rest.push((rest.pop() || 'index').replace(/\.html$/, ''));
+    const path = rest.join('/');
+
+    if (!lang) {
+      return next();
     }
-    return next();
-  }
-});
 
-app.use(express.static(join(__dirname, '..', 'htdocs')));
+    try {
+      res.send(path === 'index' ? renderMainPage(lang) : renderDocs(lang, path));
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+      return next();
+    }
+  });
 
-export default app;
+  app.use(express.static(join(__dirname, '..', 'htdocs')));
+
+  return app;
+};

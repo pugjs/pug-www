@@ -7,11 +7,11 @@ import stop from '@timothygu/stop';
 import s3 from 's3';
 
 import langs from '../langs.json';
-import app from './index.js';
+import createApp, {setEnv} from './index.js';
 
-process.env.NODE_ENV = 'production';
+setEnv('production');
 
-const server = createServer(app);
+const server = createServer(createApp());
 const output = join(__dirname, '..', 'output');
 
 removeAsync(output).then(() => {
@@ -66,11 +66,6 @@ removeAsync(output).then(() => {
     });
     uploader.on('end', () => {
       console.log("done uploading website");
-      // HACK: for some reason, server.close() doesn't make the process exit
-      process.exit(0);
     });
-  } else {
-    // HACK: for some reason, server.close() doesn't make the process exit
-    process.exit(0);
   }
 });
