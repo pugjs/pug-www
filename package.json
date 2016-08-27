@@ -26,7 +26,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "@timothygu/react-code-mirror": "^4.0.0",
+    "@timothygu/react-code-mirror": "^6.0.0",
     "accept-language": "tinganho/node-accept-language#59cf248f77dd7b52d7a0c3397f1cc3b71974ea72",
     "babel": "^6.5.2",
     "babel-polyfill": "^6.13.0",
