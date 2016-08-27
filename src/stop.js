@@ -70,5 +70,6 @@ removeAsync(output).then(() => {
   }
 }).catch(err => {
   console.error(err);
+  process.exitCode = 1;
   server.close();
 });
