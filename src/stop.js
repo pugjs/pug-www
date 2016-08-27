@@ -27,10 +27,13 @@ removeAsync(output).then(() => {
     });
   });
 }).then(port => {
-  return stop.getWebsiteStream(langs.reduce((prev, lang) => prev.concat([
+  return stop.getWebsiteStream(langs.reduce((prev, lang) => lang === 'en' ? prev : prev.concat([
     `${lang}/`,
     `${lang}/api/getting-started.html`
-  ]), []).map(url => `http://localhost:${port}/${url}`), {
+  ]), [
+    '',
+    'api/getting-started.html'
+  ]).map(url => `http://localhost:${port}/${url}`), {
     filter: currentURL => urlParse(currentURL).hostname === 'localhost',
     parallel: 1
   })

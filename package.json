@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@timothygu/react-code-mirror": "^6.0.0",
-    "accept-language": "tinganho/node-accept-language#59cf248f77dd7b52d7a0c3397f1cc3b71974ea72",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-node6": "^11.0.0",

@@ -5,6 +5,7 @@ import browserify from 'browserify-middleware';
 import envify from 'envify';
 import express from 'express';
 
+import langs from '../langs.json';
 import renderDocs from './docs';
 import renderMainPage from './main-page';
 import compileScss from './style';
@@ -58,13 +59,17 @@ export default () => {
   });
 
   app.use((req, res, next) => {
-    const [, lang, ...rest] = req.path.split('/');
+    let [, lang, ...rest] = req.path.split('/');
     rest.push((rest.pop() || 'index').replace(/\.html$/, ''));
-    const path = rest.join('/');
 
-    if (!lang) {
-      return next();
+    if (!langs.includes(lang)) {
+      if (lang) {
+        rest.unshift(lang);
+      }
+      lang = 'en';
     }
+
+    const path = rest.join('/');
 
     try {
       res.send(path === 'index' ? renderMainPage(lang) : renderDocs(lang, path));
