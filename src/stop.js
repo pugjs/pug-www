@@ -3,7 +3,7 @@ import {join} from 'path';
 import {parse as urlParse} from 'url';
 
 import {removeAsync} from 'fs-extra-promise';
-import stop from '@timothygu/stop';
+import stop from 'stop';
 import s3 from 's3';
 
 import langs from '../langs.json';
