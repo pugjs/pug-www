@@ -123,7 +123,7 @@ export default class PugPreview extends React.Component {
     };
 
     // HACK
-    if (process.env.NODE_ENV !== 'production' && this.props.renderOnly) {
+    if (this.props.renderOnly) {
       return <pre dangerouslySetInnerHTML={{__html: output}}/>;
     }
 
