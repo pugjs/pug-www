@@ -21,15 +21,15 @@ const getParams = (md, str) =>
   }, []);
 
 const template = compile(`
-dl(class=lang)
+dl.parameter-list(class={returns})
   each param in params
     dt #{param.name}#[span.type : #{param.type}]
     dd.description!= param.description
 `);
 
-export default ({md, str, lang}) => (
+export default ({md, str, config: {returns}}) => (
   template({
-    lang,
-    params: getParams(md, str)
+    params: getParams(md, str),
+    returns
   })
 );

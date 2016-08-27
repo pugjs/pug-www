@@ -5,52 +5,56 @@ import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
 import renderDoctypes from './doctypes.js';
 import renderParams from './parameter-list.js';
 import renderPreview from './preview.js';
+import renderPreviewReadonly from './preview-readonly.js';
+
+const parseInfo = (filename, info) => {
+  const [lang = '', rest = ''] = info.split(/\s+(.+)/);
+  const config = {};
+
+  if (rest) {
+    const lexer = new Lexer(rest, {filename});
+
+    if (lexer.attrs()) {
+      const attrs = lexer.tokens.slice(1, -1);
+      attrs.forEach(({name, val}) => {
+        config[name] = toConstant(val);
+      });
+    }
+  }
+
+  return {lang, config};
+};
 
 export default function mdItCodeBlock(md) {
   md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
     const token = tokens[idx];
     const info = token.info ? md.utils.unescapeAll(token.info).trim() : '';
-    let lang = '';
-    const config = {};
+    const {lang, config} = parseInfo(env.filename, info);
     const str = token.content;
 
-    if (info) {
-      const splitted = info.split(/\s+/g);
-      lang = splitted[0];
-      const lexer = new Lexer(splitted.slice(1).join(' '), {});
-      let res;
-      try {
-        res = lexer.attrs();
-      } catch (err) {
-        err.message += `\nIn ${env.id}`;
-        throw err;
-      }
+    let out;
 
-      if (res) {
-        const attrs = lexer.tokens.slice(1, -1);
-        attrs.forEach(({name, val}) => {
-          config[name] = toConstant(val);
-        });
-      }
+    switch (lang) {
+      case 'pug-preview':
+        out = renderPreview({str, config, env});
+        break;
+      case 'pug-preview-readonly':
+        out = renderPreviewReadonly({str, config, env});
+        break;
+      case 'parameter-list':
+        out = renderParams({md, str, config});
+        break;
+      case 'doctypes':
+        out = renderDoctypes();
+        break;
+      case '':
+        out = `<pre><code>${md.utils.escapeHtml(str)}</code></pre>`;
+      default:
+        const highlighted = getCodeMirrorHTML(str, lang);
+        out = `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>`;
+        break;
     }
 
-    if (lang.indexOf('pug-preview') === 0) {
-      return `${renderPreview({str, lang, config, env})}\n`;
-    }
-
-    if (lang.indexOf('parameter-list') === 0) {
-      return `${renderParams({md, str, lang})}\n`;
-    }
-
-    if (lang === 'doctypes') {
-      return `${renderDoctypes()}\n`;
-    }
-
-    if (lang) {
-      const highlighted = getCodeMirrorHTML(str, lang);
-      return `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>\n`;
-    }
-
-    return `<pre><code>${md.utils.escapeHtml(str)}</code></pre>\n`;
+    return `${out}\n`;
   };
 }

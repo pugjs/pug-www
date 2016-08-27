@@ -13,7 +13,7 @@ export default async (lang, path) => {
   const {attributes, body} = fm(src);
   const {template, id} = attributes;
 
-  const demos = previews[id] = [];
+  const demos = previews[`${lang}-${id}`] = [];
 
   const rendered = markdown.render(body, {
     lang,
