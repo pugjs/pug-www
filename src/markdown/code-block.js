@@ -49,9 +49,9 @@ export default function mdItCodeBlock(md) {
         break;
       case '':
         out = `<pre><code>${md.utils.escapeHtml(str)}</code></pre>`;
+        break;
       default:
-        const highlighted = getCodeMirrorHTML(str, lang);
-        out = `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${highlighted}</code></pre>`;
+        out = `<pre class="cm-s-default"><code${slf.renderAttrs(token)}>${getCodeMirrorHTML(str, lang)}</code></pre>`;
         break;
     }
 

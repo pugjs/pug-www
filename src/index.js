@@ -5,7 +5,6 @@ import browserify from 'browserify-middleware';
 import envify from 'envify';
 import express from 'express';
 
-import langs from '../langs.json';
 import renderDocs from './docs';
 import renderMainPage from './main-page';
 import compileScss from './style';
@@ -43,8 +42,8 @@ app.use('/js', browserify(join(__dirname, 'entry'), {
   ignore: ['http', 'https']
 }));
 
-app.get('/css/style.css', (req, res, next) => {
-  const body = compileScss('docs.scss')
+app.get('/css/style.css', (req, res) => {
+  const body = compileScss('docs.scss');
   res.type('css');
   res.send(body);
 });

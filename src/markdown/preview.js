@@ -37,7 +37,7 @@ export default function renderPreview({str, config = {}, env: {lang, id}}) {
 
   config.files = files;
 
-  const key = `${lang}-${id}`
+  const key = `${lang}-${id}`;
   if (!previews[key]) {
     previews[key] = [];
   }

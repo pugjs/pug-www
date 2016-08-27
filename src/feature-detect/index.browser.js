@@ -1,19 +1,17 @@
 // Stolen from Modernizr (MIT license)
 
-/* eslint-disable xo/catch-error-name no-implicit-coercion */
 const tests = {
   templatestrings: () => {
-    let supports;
+    let supports = false;
     try {
       // A number of tools, including uglifyjs and require, break on a raw "`", so
       // use an eval to get around that.
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-eval
       eval('``');
       supports = true;
-    } catch (e) {}
-    return !!supports;
+    } catch (err) {}
+    return supports;
   }
 };
-/* eslint-enable xo/catch-error-name no-implicit-coercion */
 
 export default funcs => funcs.every(func => tests[func]());
