@@ -11,7 +11,8 @@ import compileScss from './style';
 
 const app = express();
 
-browserify.settings.mode = 'development';
+browserify.settings.production.minify = false;
+browserify.settings.production.gzip = false;
 
 app.get('/js/pug.js', browserify(['pug'], {
   transform: [
