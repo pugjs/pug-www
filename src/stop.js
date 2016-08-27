@@ -68,4 +68,7 @@ removeAsync(output).then(() => {
       console.log("done uploading website");
     });
   }
+}).catch(err => {
+  console.error(err);
+  server.close();
 });
