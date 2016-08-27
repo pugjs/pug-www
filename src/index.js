@@ -15,6 +15,7 @@ browserify.settings.production.minify = false;
 browserify.settings.production.gzip = false;
 
 app.get('/js/pug.js', browserify(['pug'], {
+  precompile: true,
   transform: [
     envify
   ],
