@@ -44,11 +44,9 @@ app.use('/js', browserify(join(__dirname, 'entry'), {
 }));
 
 app.get('/css/style.css', (req, res, next) => {
-  compileScss('docs.scss')
-  .then(body => {
-    res.type('css');
-    res.send(body);
-  }).catch(next);
+  const body = compileScss('docs.scss')
+  res.type('css');
+  res.send(body);
 });
 
 app.use((req, res, next) => {

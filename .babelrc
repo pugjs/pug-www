@@ -1,7 +1,6 @@
 {
   "presets": [
     "node6",
-    "react",
-    "stage-3"
+    "react"
   ]
 }

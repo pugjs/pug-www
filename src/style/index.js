@@ -1,6 +1,6 @@
+import {readFileSync} from 'fs';
 import {dirname, resolve} from 'path';
 
-import {readFileAsync} from 'fs-extra-promise';
 import jst from 'jstransformer';
 import jstAutoprefixer from 'jstransformer-autoprefixer';
 import jstScss from 'jstransformer-scss';
@@ -23,8 +23,8 @@ const importer = [
   }
 ];
 
-export default async path => {
-  let {body} = await scss.renderFileAsync(`${__dirname}/../../scss/${path}`, {
+export default path => {
+  let {body} = scss.renderFile(`${__dirname}/../../scss/${path}`, {
     importer
   });
 
@@ -32,16 +32,13 @@ export default async path => {
   const contents = {};
   body.replace(/@import url\(([^\)]+)\)/g, (_, path) => paths.push(path));
 
-  await Promise.all(paths.map(p => {
-    return readFileAsync(p, 'utf8').then(data => {
-      contents[p] = data;
-      return null;
-    });
-  }));
+  paths.forEach(p => {
+    contents[p] = readFileSync(p, 'utf8');
+  });
 
   body = body.replace(/@import url\(([^\)]+)\)/g, (_, path) => contents[path]);
 
-  const {body: prefixed} = await autoprefixer.renderAsync(body);
+  const {body: prefixed} = autoprefixer.render(body);
 
   return prefixed;
 };
