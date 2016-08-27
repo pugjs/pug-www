@@ -1,31 +1,37 @@
-import {dirname, relative} from 'path';
+import MarkdownIt from 'markdown-it';
+import mdItAnchor from 'markdown-it-anchor';
+import mdItContainer from 'markdown-it-container';
 
-import fm from 'front-matter';
-import {readFileAsync} from 'fs-extra-promise';
-import {renderFile} from 'pug';
+import mdItCodeBlock from './code-block.js';
 
-import {md, tmpl} from '../utils/paths.js';
-import markdown from './markdown-it.js';
-import {previews} from './preview.js';
+export const md = new MarkdownIt({
+  html: true,
+  typographer: true
+});
 
-export default async (lang, path) => {
-  const src = await readFileAsync(md(lang, path), 'utf8');
-  const {attributes, body} = fm(src);
-  const {template, id} = attributes;
+md.use(mdItAnchor, {
+  level: 2,
+  permalink: true
+});
 
-  const demos = previews[`${lang}-${id}`] = [];
+md.use(mdItCodeBlock);
 
-  const rendered = markdown.render(body, {
-    lang,
-    id
-  });
+md.use(mdItContainer, 'card', {
+  validate(params) {
+    return /^float\s+(.*)$/.test(params.trim());
+  },
+  render(tokens, idx) {
+    const tok = tokens[idx];
+    const m = tok.info.trim().match(/^float\s+([^ ]*)(.*)$/);
 
-  return renderFile(tmpl(template), Object.assign({
-    lang,
-    rawHtml: rendered,
-    demos,
-    dirname,
-    relative,
-    _: require(`../../../pug-${lang}/strings.json`)
-  }, attributes));
-};
+    if (tok.nesting === 1) {
+      return `<div class="alert alert-${m[1]}"><h6>${m[2]}</h6>`;
+    }
+
+    return '</div>\n';
+  }
+});
+
+export {previews} from './preview.js';
+
+export default (body, env) => md.render(body, env);

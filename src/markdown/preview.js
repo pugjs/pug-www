@@ -3,8 +3,11 @@ import {extname} from 'path';
 import React from 'react';
 import {renderToString, renderToStaticMarkup} from 'react-dom/server';
 
-import PugPreview from '../components/pug-preview.js';
+// The order is important. get-codemirror-html loads the node version of
+// CodeMirror, which caches itself so that `import 'codemirror'` will not
+// `require` the browser version.
 import {getMode} from '../utils/get-codemirror-html.js';
+import PugPreview from '../components/pug-preview.js';
 
 export const previews = {};
 

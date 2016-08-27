@@ -5,7 +5,8 @@ import browserify from 'browserify-middleware';
 import envify from 'envify';
 import express from 'express';
 
-import renderMd from './markdown';
+import langs from '../langs.json';
+import renderDocs from './docs';
 import renderMainPage from './main-page';
 import compileScss from './style';
 
@@ -59,14 +60,14 @@ app.use((req, res, next) => {
     return next();
   }
 
-  (path === 'index' ? renderMainPage(lang) : renderMd(lang, path))
-  .then(html => res.send(html))
-  .catch(err => {
+  try {
+    res.send(path === 'index' ? renderMainPage(lang) : renderDocs(lang, path));
+  } catch (err) {
     if (err.code !== 'ENOENT') {
       throw err;
     }
     return next();
-  }).catch(next);
+  }
 });
 
 app.use(express.static(join(__dirname, '..', 'htdocs')));
