@@ -22,16 +22,17 @@ app.get('/js/pug.js', browserify(['pug'], {
   ignore: ['http', 'https']
 }));
 
-app.use('/js/bundle/:package', (req, res, next) => {
-  const pkgs = req.params.package.split('.')[0].split(',');
-  return browserify(pkgs, {
-    // cache the package bundle as they take such a long time to make
-    precompile: true,
-    transform: [
-      envify
-    ]
-  })(req, res, next);
-});
+app.get('/js/filters.js', browserify([
+  'jstransformer-babel',
+  'babel-preset-es2015',
+  'jstransformer-cdata-js',
+  'jstransformer-coffee-script',
+  'jstransformer-markdown-it'
+], {
+  transform: [
+    envify
+  ]
+}));
 
 app.use('/js', browserify(join(__dirname, 'entry'), {
   transform: [

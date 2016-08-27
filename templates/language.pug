@@ -4,6 +4,6 @@ block after
   script.
     var demos=!{JSON.stringify(demos || [])};
   script(src='/js/pug.js')
-  if extraMods && extraMods.length
-    script(src=`/js/bundle/${extraMods.map(m => m.split('@')[0]).join(',')}.js`)
+  each script in extraScripts || []
+    script(src=script)
   script(src='/js/language.js')
