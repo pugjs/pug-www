@@ -50,4 +50,4 @@ export default ({str, config, env: {filename}}) => {
   return `<div class="preview-wrapper" data-control="interactive" data-index=${i}>${
     renderToString(<PugPreview {...config}/>)
   }</div>`;
-}
+};

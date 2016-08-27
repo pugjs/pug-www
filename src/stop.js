@@ -53,8 +53,8 @@ removeAsync(output).then(() => {
       s3Options: {
         accessKeyId: process.env.S3_KEY,
         secretAccessKey: process.env.S3_SECRET,
-        region: process.env.S3_REGION,
-      },
+        region: process.env.S3_REGION
+      }
     });
     const uploader = client.uploadDir({
       localDir: output,
@@ -64,11 +64,11 @@ removeAsync(output).then(() => {
         Prefix: ''
       }
     });
-    uploader.on('error', (err) => {
+    uploader.on('error', err => {
       console.error('unable to sync:', err.stack);
     });
     uploader.on('end', () => {
-      console.log("done uploading website");
+      console.log('done uploading website');
     });
   }
 }).catch(err => {

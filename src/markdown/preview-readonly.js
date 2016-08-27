@@ -15,7 +15,7 @@ div
             code!= file
 `);
 
-export default ({str, config, env: {filename}}) => {
+export default ({str, env: {filename}}) => {
   const positions = new Set();
 
   const files = str.split(/\\{10}/).slice(1).reduce((prev, cur) => {
@@ -48,4 +48,4 @@ export default ({str, config, env: {filename}}) => {
     columns,
     positions: positions.size
   });
-}
+};
