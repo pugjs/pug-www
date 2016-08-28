@@ -3,8 +3,8 @@ import {join} from 'path';
 import {parse as urlParse} from 'url';
 
 import {removeAsync} from 'fs-extra-promise';
-import stop from 'stop';
-import s3 from 's3';
+import * as stop from 'stop';
+import * as s3 from 's3';
 
 import langs from '../langs.json';
 import createApp, {setEnv} from './index.js';
