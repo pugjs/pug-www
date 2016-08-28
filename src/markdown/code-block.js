@@ -7,20 +7,20 @@ import renderParams from './parameter-list.js';
 import renderPreview from './preview.js';
 import renderPreviewReadonly from './preview-readonly.js';
 
-const parseInfo = (filename, info) => {
+const parseInfo = (filename, info, startingLine) => {
   const [lang = '', rest = ''] = info.split(/\s+(.+)/);
   const config = {};
 
   if (rest) {
-    const lexer = new Lexer(rest, {filename});
+    const lexer = new Lexer(rest, {filename, startingLine});
 
     if (lexer.attrs()) {
       const attrs = lexer.tokens.slice(1, -1);
-      attrs.forEach(({name, val}) => {
+      attrs.forEach(({name, val, line}) => {
         try {
           config[name] = toConstant(val);
         } catch (err) {
-          throw new Error(`${JSON.stringify(val)} is not constant; used in ${filename}`);
+          throw new Error(`${JSON.stringify(val)} is not constant; used in ${filename}:${line}`);
         }
       });
     }
@@ -33,7 +33,7 @@ export default function mdItCodeBlock(md) {
   md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
     const token = tokens[idx];
     const info = token.info ? md.utils.unescapeAll(token.info).trim() : '';
-    const {lang, config} = parseInfo(env.filename, info);
+    const {lang, config} = parseInfo(env.filename, info, env.bodyLine + token.map[0] + 1);
     const str = token.content;
 
     let out;

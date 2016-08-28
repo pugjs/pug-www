@@ -32,6 +32,4 @@ md.use(mdItContainer, 'card', {
   }
 });
 
-export {previews} from './preview.js';
-
-export default (body, env) => md.render(body, env);
+export default md.render.bind(md);

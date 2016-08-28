@@ -42,6 +42,7 @@
     "front-matter": "^2.1.0",
     "fs-extra-promise": "^0.4.0",
     "js-beautify": "beautify-web/js-beautify#5a9fcfe8f7e53a84b3929fea881be60512e71608",
+    "js-stringify": "^1.0.2",
     "jstransformer": "^1.0.0",
     "jstransformer-autoprefixer": "^1.1.1",
     "jstransformer-scss": "^0.1.3",

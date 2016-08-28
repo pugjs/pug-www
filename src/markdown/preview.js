@@ -9,9 +9,7 @@ import {renderToString, renderToStaticMarkup} from 'react-dom/server';
 import {getMode} from '../utils/get-codemirror-html.js';
 import PugPreview from '../components/pug-preview.js';
 
-export const previews = {};
-
-export default ({str, config, env: {filename}}) => {
+export default ({str, config, env: {demos}}) => {
   const splitted = str.split(/\\{10}/);
   const files = [];
 
@@ -37,10 +35,7 @@ export default ({str, config, env: {filename}}) => {
 
   config.files = files;
 
-  if (!previews[filename]) {
-    previews[filename] = [];
-  }
-  const i = previews[filename].push(config) - 1;
+  const i = demos.push(config) - 1;
 
   if (config.features) {
     const rendered = renderToStaticMarkup(<PugPreview renderOnly {...config}/>);

@@ -6,8 +6,8 @@ import envify from 'envify';
 import express from 'express';
 
 import langs from '../langs.json';
-import renderDocs from './docs';
 import renderMainPage from './main-page';
+import renderPage from './page';
 import compileScss from './style';
 
 browserify.settings.production.minify = false;
@@ -72,7 +72,7 @@ export default () => {
     const path = rest.join('/');
 
     try {
-      res.send(path === 'index' ? renderMainPage(lang) : renderDocs(lang, path));
+      res.send(path === 'index' ? renderMainPage(lang) : renderPage(lang, path));
     } catch (err) {
       if (err.code !== 'ENOENT') {
         throw err;
