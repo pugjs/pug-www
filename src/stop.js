@@ -5,7 +5,7 @@ import {parse as urlParse} from 'url';
 import {removeAsync} from 'fs-extra-promise';
 import * as stop from 'stop';
 
-import langs from '../langs.json';
+import langs from '../langs.js';
 import createApp, {setEnv} from './index.js';
 
 setEnv('production');

@@ -1,6 +1,6 @@
 import gethub from 'gethub';
 
-import langs from '../langs.json';
+import langs from '../langs.js';
 import {lang} from './utils/paths.js';
 
 Promise.all(langs.map(l =>
