@@ -21,14 +21,14 @@ export default ({str, config, env: {demos}}) => {
     });
   } else {
     splitted.slice(1).forEach(cur => {
-      const [header, lines] = cur.split(/\n(.+)/);
+      const [header, ...lines] = cur.split(/\n/);
       const [name] = header.trim().split(/\s/);
       const ext = extname(name);
 
       files.push({
         name,
         mode: getMode(ext.substr(1)),
-        contents: lines.trim()
+        contents: lines.join('\n').trim()
       });
     });
   }
