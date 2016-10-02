@@ -21,12 +21,18 @@ md.use(mdItAnchor, {
 
 md.use((md, syntax) => {
   md.core.ruler.push('heading_comments', ({tokens}) => {
-    for (let token of tokens.filter(token => token.type === 'heading_open')) {
-      const title = tokens[tokens.indexOf(token) + 1].children[0];
-      title.content = title.content.replace(syntax, '').trim();
+    for (let [i, token] of tokens.entries()) {
+      if (token.type === 'heading_open') {
+        const heading = tokens[i + 1];
+        // When heading level is greater than `<h1>`, in order to find the last
+        // text token we need to offset the anchor symbol.
+        const offset = token.tag === 'h1' ? 1 : 5;
+        const title = heading.children[heading.children.length - offset];
+        title.content = title.content.replace(syntax, '');
+      }
     }
   });
-}, /~~(.+)$/);
+}, /\s+~~(.+)$/);
 
 md.use(mdItCodeBlock);
 
