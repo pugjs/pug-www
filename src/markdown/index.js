@@ -9,31 +9,24 @@ export const md = new MarkdownIt({
   typographer: true
 });
 
-const slugifyLegacy = mdItAnchor.defaults.slugify;
-const slugifySpecified = string => {
-  const tail = string.match(/~~(.+)$/);
-  if (tail) {
-    return slugifyLegacy(tail[1]);
-  } else {
-    return slugifyLegacy(string);
-  }
-};
-
+const defaultSlugify = mdItAnchor.defaults.slugify;
 md.use(mdItAnchor, {
   level: 2,
-  slugify: slugifySpecified,
+  slugify: string => {
+    const tail = /~~(.+)$/.exec(string);
+    return defaultSlugify(tail ? tail[1] : string);
+  },
   permalink: true
 });
 
-md.use((md, syntax) => md.core.ruler.push('heading_comments', state => {
-  const tokens = state.tokens;
-  tokens
-    .filter(token => token.type === 'heading_open')
-    .forEach(token => {
+md.use((md, syntax) => {
+  md.core.ruler.push('heading_comments', ({tokens}) => {
+    for (let token of tokens.filter(token => token.type === 'heading_open')) {
       const title = tokens[tokens.indexOf(token) + 1].children[0];
       title.content = title.content.replace(syntax, '').trim();
-    });
-}), /~~(.+)$/);
+    }
+  });
+}, /~~(.+)$/);
 
 md.use(mdItCodeBlock);
 
