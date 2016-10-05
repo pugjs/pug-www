@@ -1,3 +1,4 @@
 module.exports = [
-  'en'
+  'en',
+  'zh-cn'
 ];
