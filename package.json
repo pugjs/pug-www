@@ -65,7 +65,7 @@
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
     "jstransformer-coffee-script": "^1.1.0",
-    "jstransformer-markdown-it": "^1.0.0",
+    "jstransformer-markdown-it": "^2.0.0",
     "s3": "^4.4.0",
     "stop": "^3.1.0",
     "xo": "^0.17.0"
