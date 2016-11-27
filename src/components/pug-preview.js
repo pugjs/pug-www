@@ -4,7 +4,7 @@ import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html.js
 import objectAssign from 'object-assign';
 import pug from 'pug';
 import React from 'react';
-import CodeMirror from '@timothygu/react-code-mirror';
+import CodeMirror from 'react-code-mirror';
 
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/htmlmixed/htmlmixed';
