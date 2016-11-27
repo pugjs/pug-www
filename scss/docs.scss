@@ -1,11 +1,10 @@
 // Moved to HTML
 // @import url(https://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic|PT+Sans:400,400italic,700,700italic);
 
-@import "_variables.scss";
-@import "~bootstrap/scss/bootstrap.scss";
-
+@import "_bootstrap.scss";
 @import "_anchor.scss";
 @import "_code.scss";
+@import "_main.scss";
 @import "_menu.scss";
 @import "_navbar.scss";
 @import "_parameter-list.scss";

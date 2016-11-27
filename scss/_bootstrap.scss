@@ -1,0 +1,12 @@
+@import "_variables.scss";
+@import "~bootstrap/scss/bootstrap-reboot.scss";
+@import "~bootstrap/scss/_mixins.scss";
+@import "~bootstrap/scss/_type.scss";
+@import "~bootstrap/scss/_code.scss";
+@import "~bootstrap/scss/_nav.scss";
+@import "~bootstrap/scss/_navbar.scss";
+@import "~bootstrap/scss/utilities/_background.scss";
+.container {
+  @include make-container();
+  @include make-container-max-widths();
+}

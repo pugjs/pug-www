@@ -13,4 +13,8 @@
     margin-top: (20px - 30px) * 1.5 * 0.75;
     margin-bottom: (20px - 30px) * 1.5 * 0.25;
   }
+
+  .navbar-nav {
+    @include float-right();
+  }
 }
