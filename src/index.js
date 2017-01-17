@@ -26,7 +26,7 @@ export default () => {
     transform: [
       envify
     ],
-    ignore: ['http', 'https']
+    ignore: ['http', 'https', 'resolve']
   }));
 
   app.get('/js/filters.js', browserify([
