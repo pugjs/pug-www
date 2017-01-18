@@ -1,3 +1,4 @@
+
 mixin menu
   mixin menuGroup(path)
     - var isCurrent = path === dirname(id)
@@ -9,7 +10,7 @@ mixin menu
 
   mixin menuItem(path)
     a.nav-link(
-      href=relative(dirname(id), path + '.html')
+      href=relative(dirname(id), path)
       class={active: path === id}
     )= _.menu[path]
 

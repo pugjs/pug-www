@@ -2,5 +2,8 @@
   "presets": [
     "es2015-node6",
     "react"
+  ],
+  "plugins": [
+    "transform-react-pug"
   ]
 }

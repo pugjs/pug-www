@@ -1,9 +1,0 @@
-extends generic.pug
-
-block after
-  script.
-    var demos=!{jsStringify(demos || [])};
-  script(src='/js/pug.js')
-  each script in attributes.extraScripts || []
-    script(src=script)
-  script(src='/js/language.js')
