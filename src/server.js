@@ -1,10 +1,10 @@
-import {dirname, relative} from 'path';
 import express from 'express';
 import React from 'react';
 import ReactServer from 'react-dom/server';
 import jsStringify from 'js-stringify';
 import {compileFile as pug} from 'pug';
 import Promise from 'promise';
+import addLanguage from './utils/add-language';
 import parsePath from './utils/parse-path';
 import readFile from './utils/read-file';
 import extractMetadata from './utils/extract-metadata';
@@ -46,8 +46,7 @@ app.use((req, res, next) => {
       attributes,
       '_': strings,
 
-      dirname,
-      relative,
+      addLanguage: path => addLanguage(lang, path),
       jsStringify,
 
       rawHtml,
