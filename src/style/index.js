@@ -6,7 +6,7 @@ import jstAutoprefixer from 'jstransformer-autoprefixer';
 import jstScss from 'jstransformer-scss';
 import {sync as nodeResolve} from 'resolve';
 
-import {scss as scssPath} from '../utils/paths.js';
+import config from '../config.js';
 
 const autoprefixer = jst(jstAutoprefixer);
 const scss = jst(jstScss);
@@ -26,8 +26,8 @@ const importer = [
   }
 ];
 
-export default path => {
-  let {body} = scss.renderFile(scssPath(path), {
+export default () => {
+  let {body} = scss.renderFile(config.scssPath, {
     importer
   });
 

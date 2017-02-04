@@ -4,6 +4,7 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/pug/pug';
 import 'codemirror/mode/shell/shell';
+import React from 'react';
 
 import {runtime} from 'pug';
 
@@ -24,18 +25,23 @@ export const getMode = mode => (
   normalizeMode[mode] || (console.error(`FIXME: recognize CodeMirror ${mode} mode`), mode)
 );
 
-export default (src, mode) => {
-  let out = '';
-  runMode(src, getMode(mode), (text, style) => {
+function CodeComponent({lang, code}) {
+  if (!lang) {
+    return <pre><code>{code}</code></pre>;
+  }
+  const tokens = [];
+  runMode(code, getMode(lang), (text, style) => {
     if (style) {
-      out += `<span class="${style.split(' ').map(s => `cm-${s}`).join(' ')}">`;
-    }
-
-    out += runtime.escape(text);
-
-    if (style) {
-      out += '</span>';
+      const className = style.split(' ').map(s => `cm-${s}`).join(' ');
+      tokens.push(pug`span(key=tokens.length className=className)= text`);
+    } else {
+      tokens.push(text);
     }
   });
-  return out;
-};
+  return pug`
+    pre.cm-s-default
+      code= tokens
+  `;
+}
+
+export default CodeComponent;
