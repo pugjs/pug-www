@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "eslint-config-xo-react": "^0.11.0",
-    "eslint-plugin-react": "^6.0.0",
+    "eslint-plugin-react": "^7.0.0",
     "gethub": "^2.0.2",
     "jstransformer-babel": "^2.1.0",
     "jstransformer-cdata-js": "^1.0.0",
