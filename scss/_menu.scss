@@ -91,7 +91,16 @@ $transition: 0.3s ease-in-out;
 }
 
 .sponsor {
+  margin-left: 16px;
   color: hsl(0, 0%, 51%);
+}
+.advert {
+  margin-left: 16px;
+  // make space for asynchronously rendered advert
+  height: 167px;
+}
+.menu.outside .advert {
+  height: auto;
 }
 
 #carbonads {
