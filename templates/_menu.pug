@@ -15,6 +15,7 @@ mixin menu
 
   // nav placeholder
   nav.nav.nav-pills.nav-stacked
+    .advert
     +menuGroup('api')
       +menuItem('api/getting-started')
       +menuItem('api/express')
@@ -36,3 +37,11 @@ mixin menu
       +menuItem('language/mixins')
       +menuItem('language/plain-text')
       +menuItem('language/tags')
+
+    .sponsor
+      | Supported by
+
+      a(href="https://icons8.com/icon")
+        img(src="https://png.icons8.com/color/icons8/100" width="50" height="50" alt="Icons8, a free icon pack")
+        | Icons8
+      

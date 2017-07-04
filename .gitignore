@@ -5,3 +5,4 @@ lib
 output
 coverage
 npm-debug.log*
+package-lock.json
