@@ -97,10 +97,10 @@ $transition: 0.3s ease-in-out;
 .advert {
   margin-left: 16px;
   // make space for asynchronously rendered advert
-  height: 167px;
+  min-height: 180px;
 }
 .menu.outside .advert {
-  height: auto;
+  min-height: auto;
 }
 
 #carbonads {
