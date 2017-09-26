@@ -51,7 +51,7 @@
     "object-assign": "^4.1.0",
     "pug": "^2.0.0-beta6",
     "pug-lexer": "^3.0.0",
-    "react": "^15.1.0",
+    "react": "^16.0.0",
     "react-code-mirror": "^3.1.0",
     "react-dom": "^15.1.0",
     "resolve": "^1.1.7",
