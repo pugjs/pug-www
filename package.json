@@ -33,7 +33,7 @@
     "babel-register": "^6.9.0",
     "babelify": "^7.3.0",
     "bootstrap": "4.0.0-alpha.5",
-    "browserify-middleware": "^7.0.0",
+    "browserify-middleware": "^8.0.0",
     "codemirror": "^5.18.2",
     "constantinople": "^3.1.0",
     "envify": "^4.0.0",
