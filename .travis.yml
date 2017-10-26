@@ -6,8 +6,10 @@ node_js:
 sudo: false
 
 install:
-  - npm i
+  - yarn
   - node get-langs
+
+cache: yarn
 
 script:
   - node stop
