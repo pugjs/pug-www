@@ -6,8 +6,8 @@ import {renderToString, renderToStaticMarkup} from 'react-dom/server';
 // The order is important. get-codemirror-html loads the node version of
 // CodeMirror, which caches itself so that `import 'codemirror'` will not
 // `require` the browser version.
-import {getMode} from '../utils/get-codemirror-html.js';
-import PugPreview from '../components/pug-preview.js';
+import {getMode} from '../utils/get-codemirror-html';
+import PugPreview from '../components/pug-preview';
 
 export default ({str, config, env: {demos}}) => {
   const splitted = str.split(/\\{10}/);

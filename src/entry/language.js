@@ -5,8 +5,8 @@ import * as pug from 'pug';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import '../browser/menu.js';
-import PugPreview from '../components/pug-preview.js';
+import '../browser/menu'; // eslint-disable-line import/no-unassigned-import
+import PugPreview from '../components/pug-preview';
 
 window.pug = pug;
 

@@ -3,7 +3,7 @@ import {extname} from 'path';
 
 import {compile} from 'pug';
 
-import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
+import getCodeMirrorHTML from '../utils/get-codemirror-html';
 
 const tmpl = compile(`
 div

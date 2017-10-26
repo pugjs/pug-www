@@ -2,7 +2,7 @@ import {dirname} from 'path';
 import {sync as resolve} from 'resolve';
 
 import {compile} from 'pug';
-import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
+import getCodeMirrorHTML from '../utils/get-codemirror-html';
 
 const template = compile(`
 dl

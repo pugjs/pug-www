@@ -1,11 +1,11 @@
 import {toConstant} from 'constantinople';
 import {Lexer} from 'pug-lexer';
 
-import getCodeMirrorHTML from '../utils/get-codemirror-html.js';
-import renderDoctypes from './doctypes.js';
-import renderParams from './parameter-list.js';
-import renderPreview from './preview.js';
-import renderPreviewReadonly from './preview-readonly.js';
+import getCodeMirrorHTML from '../utils/get-codemirror-html';
+import renderDoctypes from './doctypes';
+import renderParams from './parameter-list';
+import renderPreview from './preview';
+import renderPreviewReadonly from './preview-readonly';
 
 const parseInfo = (filename, info, startingLine) => {
   const [lang = '', rest = ''] = info.split(/\s+(.+)/);
@@ -30,6 +30,7 @@ const parseInfo = (filename, info, startingLine) => {
 };
 
 export default function mdItCodeBlock(md) {
+  // eslint-disable-next-line max-params
   md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
     const token = tokens[idx];
     const info = token.info ? md.utils.unescapeAll(token.info).trim() : '';

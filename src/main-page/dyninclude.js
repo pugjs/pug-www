@@ -12,7 +12,7 @@ const interpolate = (origTok, locals) => {
     if (tok.type === 'text') {
       str += tok.val;
     } else if (tok.type === 'interpolated-code') {
-      if (locals[tok.val] == null) {
+      if (locals[tok.val] === null || locals[tok.val] === undefined) {
         lexer.colno = tok.col;
         lexer.error('DYNINCLUDE_UNDEFINED_VARIABLE', `Variable "${tok.val}" is not defined`);
       } else {
@@ -36,7 +36,7 @@ export default (locals = {}) => {
           try {
             tok.val = interpolate(tok, locals);
           } catch (err) {
-            if (err.code && /^PUG:/.test(err.code)) {
+            if (err.code && err.code.startsWith('PUG:')) {
               lexer.colno = err.column;
               lexer.error(err.code.substr(4), err.msg);
             }
