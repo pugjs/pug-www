@@ -1,9 +1,11 @@
 import {runMode} from 'codemirror/addon/runmode/runmode.node';
+/* eslint-disable import/no-unassigned-import */
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/pug/pug';
 import 'codemirror/mode/shell/shell';
+/* eslint-enable import/no-unassigned-import */
 
 import {runtime} from 'pug';
 

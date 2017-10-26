@@ -1,7 +1,7 @@
 import {renderFile} from 'pug';
 
-import {tmpl} from '../utils/paths.js';
-import dynInclude from './dyninclude.js';
+import {tmpl} from '../utils/paths';
+import dynInclude from './dyninclude';
 
 export default lang => renderFile(tmpl('index'), {
   plugins: [

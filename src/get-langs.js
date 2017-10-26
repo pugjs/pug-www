@@ -1,7 +1,7 @@
 import gethub from 'gethub';
 
-import langs from '../langs.js';
-import {lang} from './utils/paths.js';
+import langs from '../langs';
+import {lang} from './utils/paths';
 
 Promise.all(langs.map(l =>
   gethub('pugjs', `pug-${l}`, 'master', lang(l)).then(() => {

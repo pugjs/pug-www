@@ -1,17 +1,20 @@
 import {resolve, dirname, relative} from 'path';
 
-import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html.js';
+import {html_beautify as beautifyHtml} from 'js-beautify/js/lib/beautify-html';
 import objectAssign from 'object-assign';
 import pug from 'pug';
 import React from 'react';
+import PropTypes from 'prop-types';
 import CodeMirror from 'react-code-mirror';
 
+/* eslint-disable import/no-unassigned-import */
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/pug/pug';
+/* eslint-enable import/no-unassigned-import */
 
-import detect from '../feature-detect/index.js';
+import detect from '../feature-detect/index';
 
 export default class PugPreview extends React.Component {
   constructor(props) {
@@ -24,6 +27,8 @@ export default class PugPreview extends React.Component {
     };
 
     this._inputs = [];
+    this.refCallback = c => this._inputs.push(c);
+
     this._supported = detect(features);
 
     this.findFile = filename => {
@@ -35,10 +40,18 @@ export default class PugPreview extends React.Component {
       return null;
     };
 
-    this.genUpdateFunc = i => ({target: {value}}) => {
-      const {files} = this.state;
-      files[i].contents = value;
-      this.setState({files});
+    const updateFuncs = [];
+    this.genUpdateFunc = i => {
+      if (updateFuncs[i]) {
+        return updateFuncs[i];
+      }
+      const func = ({target: {value}}) => {
+        const {files} = this.state;
+        files[i].contents = value;
+        this.setState({files});
+      };
+      updateFuncs[i] = func;
+      return func;
     };
 
     this.options = {
@@ -68,10 +81,11 @@ export default class PugPreview extends React.Component {
 
   static get propTypes() {
     return {
-      files: React.PropTypes.array.isRequired,
-      main: React.PropTypes.string,
-      features: React.PropTypes.array,
-      output: React.PropTypes.string
+      files: PropTypes.array.isRequired,
+      main: PropTypes.string,
+      features: PropTypes.array,
+      output: PropTypes.string,
+      renderOnly: PropTypes.bool
     };
   }
 
@@ -88,7 +102,9 @@ export default class PugPreview extends React.Component {
   static get defaultProps() {
     return {
       main: 'index.pug',
-      features: []
+      features: [],
+      output: '',
+      renderOnly: false
     };
   }
 
@@ -100,7 +116,7 @@ export default class PugPreview extends React.Component {
         output = pug.render(this.findFile(this.state.main).contents, objectAssign({
           filename: this.state.main
         }, this.options)).trim();
-        output = beautifyHtml(output, {indent_size: 2});
+        output = beautifyHtml(output, {indent_size: 2}); // eslint-disable-line camelcase
       } catch (err) {
         output = err.message;
       }
@@ -124,17 +140,26 @@ export default class PugPreview extends React.Component {
 
     // HACK
     if (this.props.renderOnly) {
+      // eslint-disable-next-line react/no-danger
       return <pre dangerouslySetInnerHTML={{__html: output}}/>;
     }
 
     return (
       <div className="row">
         <div className="col-lg-6">
-        {
-          this.state.files.map((file, i) => (
-            <CodeMirror ref={c => this._inputs.push(c)} key={file.name} value={file.contents} onChange={this.genUpdateFunc(i)} mode={file.mode} readOnly={file.readOnly || !this._supported} {...options}/>
-          ))
-        }
+          {
+            this.state.files.map((file, i) => (
+              <CodeMirror
+                ref={this.refCallback}
+                key={file.name}
+                value={file.contents}
+                onChange={this.genUpdateFunc(i)}
+                mode={file.mode}
+                readOnly={file.readOnly || !this._supported}
+                {...options}
+              />
+            ))
+          }
         </div>
         <div className="col-lg-6">
           <CodeMirror value={output} mode="htmlmixed" readOnly {...options}/>

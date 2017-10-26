@@ -5,8 +5,8 @@ import fm from 'front-matter';
 import jsStringify from 'js-stringify';
 import {compileFile as pug} from 'pug';
 
-import markdown from '../markdown/';
-import {md, tmpl, strs} from '../utils/paths.js';
+import markdown from '../markdown/index';
+import {md, tmpl, strs} from '../utils/paths';
 
 export class Page {
   constructor(lang, path) {

@@ -5,7 +5,7 @@ import browserify from 'browserify-middleware';
 import envify from 'envify';
 import express from 'express';
 
-import langs from '../langs.js';
+import langs from '../langs';
 import renderMainPage from './main-page';
 import renderPage from './page';
 import compileScss from './style';

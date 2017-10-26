@@ -2,7 +2,7 @@ import MarkdownIt from 'markdown-it';
 import mdItAnchor from 'markdown-it-anchor';
 import mdItContainer from 'markdown-it-container';
 
-import mdItCodeBlock from './code-block.js';
+import mdItCodeBlock from './code-block';
 
 export const md = new MarkdownIt({
   html: true,
@@ -21,7 +21,7 @@ md.use(mdItAnchor, {
 
 md.use((md, syntax) => {
   md.core.ruler.push('heading_comments', ({tokens}) => {
-    for (let [i, token] of tokens.entries()) {
+    for (const [i, token] of tokens.entries()) {
       if (token.type === 'heading_open') {
         const heading = tokens[i + 1];
         // When heading level is greater than `<h1>`, in order to find the last

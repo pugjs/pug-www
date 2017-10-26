@@ -6,7 +6,7 @@ import jstAutoprefixer from 'jstransformer-autoprefixer';
 import jstScss from 'jstransformer-scss';
 import {sync as nodeResolve} from 'resolve';
 
-import {scss as scssPath} from '../utils/paths.js';
+import {scss as scssPath} from '../utils/paths';
 
 const autoprefixer = jst(jstAutoprefixer);
 const scss = jst(jstScss);
@@ -31,7 +31,7 @@ export default path => {
     importer
   });
 
-  body = body.replace(/@import url\(([^\)]+)\)/g, (_, p) => {
+  body = body.replace(/@import url\(([^)]+)\)/g, (_, p) => {
     return readFileSync(p, 'utf8');
   });
 
