@@ -67,7 +67,7 @@
     "jstransformer-markdown-it": "^2.0.0",
     "s3": "^4.4.0",
     "stop": "TimothyGu/stop#cebdbac7e97ed8ba276dab50a296cc37ced8f848",
-    "xo": "^0.18.0"
+    "xo": "^0.20.0"
   },
   "browser": {
     "./src/feature-detect/index.js": "./src/feature-detect/index.browser.js"
