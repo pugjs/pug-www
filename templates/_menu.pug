@@ -7,11 +7,18 @@ mixin menu
     ul.nav.nav-pills.nav-stacked
       block
 
-  mixin menuItem(path)
+  mixin menuItemTemplate(href, text, isActive = false)
     a.nav-link(
-      href=relative(dirname(id), path + '.html')
-      class={active: path === id}
-    )= _.menu[path]
+      href=href
+      class={active: isActive}
+    )= text
+  
+  mixin menuItem(path)
+    +menuItemTemplate(
+      relative(dirname(id), path + '.html'), 
+      _.menu[path], 
+      path === id
+    )
 
   // nav placeholder
   nav.nav.nav-pills.nav-stacked
@@ -21,6 +28,10 @@ mixin menu
       +menuItem('api/express')
       +menuItem('api/reference')
       +menuItem('api/migration-v2')
+      +menuItemTemplate(
+        'https://github.com/pugjs/babel-plugin-transform-react-pug', 
+        'React Integration'
+      )
 
     +menuGroup('language')
       +menuItem('language/attributes')
