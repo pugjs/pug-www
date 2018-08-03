@@ -5,6 +5,10 @@ node_js:
 # Use faster Docker architecture on Travis.
 sudo: false
 
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
+
 install:
   - yarn
   - node get-langs
