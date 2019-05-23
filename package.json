@@ -46,7 +46,7 @@
     "jstransformer-autoprefixer": "^2.0.0",
     "jstransformer-scss": "^1.0.0",
     "markdown-it": "^8.0.1",
-    "markdown-it-anchor": "^4.0.0",
+    "markdown-it-anchor": "^5.1.0",
     "markdown-it-container": "^2.0.0",
     "object-assign": "^4.1.0",
     "prop-types": "^15.6.0",
