@@ -3443,11 +3443,10 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
-markdown-it-anchor@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-anchor/-/markdown-it-anchor-4.0.0.tgz#e87fb5543e01965adf71506c6bf7b0491841b7e3"
-  dependencies:
-    string "^3.3.3"
+markdown-it-anchor@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/markdown-it-anchor/-/markdown-it-anchor-5.1.0.tgz#197236c448e09ae839c1edb9dd188fa5ae27c36a"
+  integrity sha512-wJOmyXzDUxI8iuowEsaQAKMQBButhSw8j64SpgcaL75QZYC/OSZV66Fnr50lfMLYNGtV0rJdw2fmLwXCT6T+bw==
 
 markdown-it-container@^2.0.0:
   version "2.0.0"
@@ -5020,10 +5019,6 @@ string-width@^2.0.0:
   dependencies:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
-
-string@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/string/-/string-3.3.3.tgz#5ea211cd92d228e184294990a6cc97b366a77cb0"
 
 string_decoder@~0.10.x:
   version "0.10.31"
