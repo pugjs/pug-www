@@ -35,7 +35,7 @@
     "bootstrap": "4.0.0-alpha.5",
     "browserify-middleware": "^8.0.0",
     "codemirror": "^5.18.2",
-    "constantinople": "^3.1.0",
+    "constantinople": "^4.0.0",
     "envify": "^4.0.0",
     "express": "^4.13.4",
     "front-matter": "^2.1.0",
