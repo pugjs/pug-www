@@ -18,7 +18,7 @@ const parseInfo = (filename, info, startingLine) => {
       const attrs = lexer.tokens.slice(1, -1);
       attrs.forEach(({name, val, line}) => {
         try {
-          config[name] = toConstant(val);
+          config[name] = typeof val === 'string' ? toConstant(val) : val;
         } catch (err) {
           throw new Error(`${JSON.stringify(val)} is not constant; used in ${filename}:${line}`);
         }

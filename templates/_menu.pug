@@ -49,10 +49,13 @@ mixin menu
       +menuItem('language/plain-text')
       +menuItem('language/tags')
 
+    +menuGroup('support')
+      +menuItem('support/community')
+      +menuItem('support/enterprise')
+
     .nav-link Sponsors
-      a.sponsor(href="https://icons8.com/icon")
-        img(src="https://png.icons8.com/color/icons8/100" width="50" height="50" alt="Icons8, a free icon pack")
-        | Icons8
+      a.sponsor(href="https://www.coinnewsspan.com/")
+        | coin news
       - for (var i = 0; i < 5; i++)
         a.sponsor(href=`https://opencollective.com/pug/sponsor/${i}/website` target="_blank")
           img(src=`https://opencollective.com/pug/sponsor/${i}/avatar.svg` height="64")
