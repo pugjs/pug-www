@@ -69,6 +69,9 @@
     "stop": "TimothyGu/stop#cebdbac7e97ed8ba276dab50a296cc37ced8f848",
     "xo": "^0.18.0"
   },
+  "resolutions": {
+    "graceful-fs": "^4.1.11"
+  },
   "browser": {
     "./src/feature-detect/index.js": "./src/feature-detect/index.browser.js"
   },
