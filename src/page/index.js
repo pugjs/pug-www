@@ -8,10 +8,35 @@ import {compileFile as pug} from 'pug';
 import markdown from '../markdown/index';
 import {md, tmpl, strs} from '../utils/paths';
 
+function deepMerge(a, b) {
+  const result = {};
+  for (const key of Object.keys(a)) {
+    if (!(key in b)) {
+      result[key] = a[key];
+    }
+  }
+  for (const key of Object.keys(b)) {
+    if (
+      b[key] && typeof b[key] === 'object' && !Array.isArray(b[key]) &&
+      a[key] && typeof a[key] === 'object' && !Array.isArray(a[key])
+    ) {
+      result[key] = deepMerge(a[key], b[key]);
+    } else {
+      result[key] = b[key];
+    }
+  }
+  return result;
+}
 export class Page {
   constructor(lang, path) {
     const filename = md(lang, path);
-    const src = readFileSync(filename).toString();
+    let src;
+    try {
+      src = readFileSync(filename).toString();
+    } catch (ex) {
+      const filename = md('en', path);
+      src = readFileSync(filename).toString();
+    }
     const {attributes, body} = fm(src);
 
     Object.assign(this, {
@@ -22,7 +47,7 @@ export class Page {
       attributes,
       body,
       bodyLine: src.split('\n').length - body.split('\n').length,
-      _: require(strs(lang))
+      _: lang === 'en' ? require(strs('en')) : deepMerge(require(strs('en')), require(strs(lang))),
     });
   }
 
